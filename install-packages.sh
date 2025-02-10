@@ -5,13 +5,13 @@ RED="\e[31m"
 RESET="\e[0m"
 
 echo -e "${GREEN}Adding repositories ...${RESET}"
-dnf autoremove -y
-dnf copr enable kwizart/kernel-longterm-6.6 -y
-dnf copr enable peterwu/rendezvous -y
-dnf copr enable pgdev/ghostty -y
-dnf copr enable tomaszgasior/mushrooms -y
-dnf copr enable zeno/scrcpy -y
-dnf update --refresh -y
+sudo dnf autoremove -y
+sudo dnf copr enable peterwu/rendezvous -y
+sudo dnf copr enable pgdev/ghostty -y
+sudo dnf copr enable tomaszgasior/mushrooms -y
+sudo dnf copr enable zeno/scrcpy -y
+sudo dnf update --refresh -y
+echo "All repositories added ..."
 echo "Installing packages ..."
 
 PACKAGES=(
@@ -49,7 +49,7 @@ PACKAGES=(
 
 echo -e "${GREEN}Installing packages ...${RESET}"
 for PACKAGE in "${PACKAGES[@]}"; do
-    if dnf install "$PACKAGE" -y; then
+    if sudo dnf install "$PACKAGE" -y; then
         echo -e "${GREEN}$PACKAGE installed successfully.${RESET}"
     else
         echo -e "${RED}Failed to install $PACKAGE.${RESET}"

@@ -17,7 +17,6 @@ PACKAGES=(
 	com.usebottles.bottles
 	com.brave.Browser
 	org.gnome.Characters
-	nl.hjdskes.gcolor3
 	org.gnome.Connections
 	com.bitwarden.desktop
 	ca.desrt.dconf-editor
@@ -31,7 +30,11 @@ PACKAGES=(
 	io.github.realmazharhussain.GdmSettings
 	org.gimp.GIMP
 	io.github.shiftey.Desktop
+	org.kde.kcolorchooser
 	org.kde.kdenlive
+	org.kde.kolourpaint
+	org.kde.krita
+	org.kde.kstars
 	org.gnome.Logs
 	org.gnome.Loupe
 	net.lutris.Lutris
@@ -46,6 +49,9 @@ PACKAGES=(
 	net.davidotek.pupgui2
 	com.github.Matoking.protontricks
 	io.github.Qalculate
+	org.qbittorrent.qBittorrent
+	org.gnome.Rhythmbox3
+	com.jetbrains.Rider
 	net.runelite.RuneLite
 	org.signal.Signal
 	io.github.pwr_solaar.solaar

@@ -16,48 +16,45 @@ PACKAGES=(
 	org.audacityteam.Audacity
 	com.usebottles.bottles
 	com.brave.Browser
-	org.gnome.Characters
-	org.gnome.Connections
 	com.bitwarden.desktop
 	ca.desrt.dconf-editor
-	org.gnome.Decibels
 	io.github.freedoom.Phase1
 	io.github.endless_sky.endless_sky
-	org.gnome.Evince
-	org.gnome.Extensions
-	com.github.tchx84.Flatseal
+	org.kde.filelight
 	com.geeks3d.furmark
-	io.github.realmazharhussain.GdmSettings
 	org.gimp.GIMP
 	io.github.shiftey.Desktop
+	org.kde.gwenview
 	org.kde.kcolorchooser
 	org.kde.kdenlive
+	org.kde.kiten
 	org.kde.kolourpaint
 	org.kde.krita
 	org.kde.kstars
-	org.gnome.Logs
-	org.gnome.Loupe
+	org.libreoffice.LibreOffice
 	net.lutris.Lutris
 	org.fedoraproject.MediaWriter
 	com.obsproject.Studio
 	md.obsidian.Obsidian
-	org.onlyoffice.desktopeditors
+	org.kde.okular
 	org.openttd.OpenTTD
 	com.pokemmo.PokeMMO
 	me.proton.Mail
 	com.protonvpn.www
 	net.davidotek.pupgui2
 	com.github.Matoking.protontricks
-	io.github.Qalculate
+	io.github.Qalculate.qalculate-qt
 	org.qbittorrent.qBittorrent
-	org.gnome.Rhythmbox3
+	org.kde.elisa
+	org.remmina.Remmina
 	com.jetbrains.Rider
 	net.runelite.RuneLite
 	org.signal.Signal
+	it.mijorus.smile
 	io.github.pwr_solaar.solaar
 	com.valvesoftware.Steam
 	com.valvesoftware.Steam.Utility.steamtinkerlaunch
-	org.gnome.Totem
+	org.videolan.VLC
 	com.vscodium.codium
 	io.github.aandrew_me.ytdn
 )

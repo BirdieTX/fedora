@@ -7,8 +7,8 @@ fi
 
 USER_HOME=$(eval echo ~$SUDO_USER)
 
-echo "Copying system configuration files ..."
-sudo cp -r dnf.conf /etc/dnf
+echo "Copying dnf config ..."
+cp -r dnf.conf /etc/dnf
 
 echo "Copying user configuration files ..."
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
@@ -21,7 +21,7 @@ sudo -u "$SUDO_USER" git clone https://github.com/svenstaro/genact.git "$USER_HO
 sudo -u "$SUDO_USER" git clone --depth 1 https://gitlab.com/VandalByte/darkmatter-grub-theme.git "$USER_HOME/Downloads/darkmatter-grub-theme"
 
 echo "Removing bullshit from system ..."
-sudo dnf remove -y \ 
+dnf remove -y \
     abrt \
     evince \
     firefox \
@@ -53,7 +53,7 @@ sudo dnf remove -y \
     totem \
     yelp
 
-sudo dnf autoremove -y
+dnf autoremove -y
 
 echo "Enabling Copr repositories ..."
 sudo dnf copr enable peterwu/rendezvous -y
@@ -62,8 +62,8 @@ sudo dnf copr enable tomaszgasior/mushrooms -y
 sudo dnf copr enable zeno/scrcpy -y
 
 echo "Installing system packages ..."
-sudo dnf update --refresh -y
-sudo dnf install -y \
+dnf update --refresh -y
+dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" \
     bibata-cursor-themes \
@@ -145,10 +145,12 @@ sudo -u "$SUDO_USER" flatpak install -y \
     org.gnome.Totem \
     com.vscodium.codium \
     io.github.aandrew_me.ytdn
-
+echo "Applying grub theme ..."
 cd "$USER_HOME/Downloads/darkmatter-grub-theme"
 sudo python3 darkmatter-theme.py --install
-sudo cp -r grub /etc/default/grub
-sudo cp -r config /etx/selinux/config
+"Replacing system configuration files ..."
+cd "$USER_HOME/Downloads/fedora
+cp -r grub /etc/default/grub
+cp -r config /etx/selinux/config
 
 echo "Setup complete!"

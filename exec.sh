@@ -9,6 +9,7 @@ USER_HOME=$(eval echo ~$SUDO_USER)
 
 echo "Copying dnf config ..."
 cp -r dnf.conf /etc/dnf
+cp -r config /etc/selinux
 
 echo "Copying user configuration files ..."
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
@@ -23,205 +24,108 @@ sudo -u "$SUDO_USER" git clone --depth 1 https://gitlab.com/VandalByte/darkmatte
 echo "Removing bullshit from system ..."
 dnf remove -y \
     abrt \
-    evince \
     firefox \
-    gnome-boxes \
-    gnome-calculator \
     gnome-calendar \
-    gnome-characters \
-    gnome-clocks \
     gnome-connections \
     gnome-contacts \
-    gnome-font-viewer \
-    gnome-logs \
     gnome-maps \
-    gnome-software \
-    gnome-text-editor \
     gnome-tour \
     gnome-weather \
-    libreoffice-core \
-    loupe \
-    mediawriter \
     ptyxis \
-    qemu-guest-agent \
-    qemu-user-static-aarch64 \
-    qemu-user-static-arm \
-    qemu-user-static-x86 \
-    rhythmbox \
-    simple-scan \
     snapshot \
-    totem \
     yelp
 
 dnf autoremove -y
 
-echo "Enabling Copr repositories ..."
-sudo dnf copr enable peterwu/rendezvous -y
-sudo dnf copr enable pgdev/ghostty -y
-sudo dnf copr enable tomaszgasior/mushrooms -y
-sudo dnf copr enable zeno/scrcpy -y
-
-echo "Enabling RPM Fusion repositories ..."
+echo "Enabling additional repositories ..."
+dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+dnf copr enable herzen/davinci-helper -y
+dnf copr enable peterwu/rendezvous -y
+dnf copr enable pgdev/ghostty -y
+dnf copr enable tomaszgasior/mushrooms -y
+dnf copr enable zeno/scrcpy -y
+rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h\n" | sudo tee -a /etc/yum.repos.d/vscodium.repo
 dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 
 echo "Installing system packages ..."
 dnf update --refresh -y
-dnf install -y \
+dnf install --allowerasing -y \
+    audacity \
     bibata-cursor-themes \
     bat \
+    brave-browser \
     cargo \
     cmatrix \
+    codium \
+    davinci-helper \
+    dconf-editor \
     discord \
     eza \
     fastfetch \
+    ffmpeg \
     fish \
+    flatseal \
     gamescope \
+    gimp \
+    gnome-extensions-app \
     gnome-tweaks \
     goverlay ghostty \
     grub-customizer \
     gstreamer1-plugin-openh264 \
     jetbrains-mono-fonts-all \
+    kdenlive \
+    kolourpaint \
     mangohud \
     memtest86+ \
+    mesa-va-drivers-freeworld \
+    mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
     nautilus-admin \
     papirus-icon-theme \
     protontricks \
     pulseaudio-utils \
+    qbittorrent \
+    remmina \
     scrcpy \
     steam-devices \
-    terminus-fonts
+    terminus-fonts \
+    vlc
+
+dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
+dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 
 echo "Checking for flatpak updates ..."
 sudo -u "$SUDO_USER" flatpak update -y
 
-echo "Installing GNOME flatpaks from Flathub: ..."
-echo "  Disk Usage Analyzer"
-echo "  Characters"
-echo "  Connections"
-echo "  Decibels"
-echo "  Document Viewer"
-echo "  Extensions"
-echo "  Logs"
-echo "  Image Viewer"
-echo "  Rhythmbox"
-echo "  Videos"
+echo "Installing flatpaks from Flathub: ..."
 
 sudo -u "$SUDO_USER" flatpak install flathub -y \
-    org.gnome.baobab \
-    org.gnome.Characters \
-    org.gnome.Connections \
     org.gnome.Decibels \
-    org.gnome.Evince \
-    org.gnome.Extensions \
-    org.gnome.Logs \
-    org.gnome.Loupe \
-    org.gnome.Rhythmbox3 \
-    org.gnome.Totem
-
-echo "Installing KDE flatpaks from Flathub: ..."
-echo "  KColorChooser"
-echo "  Kdenlive"
-echo "  KolourPaint"
-echo "  Krita"
-echo "  KStars"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
-    org.kde.kcolorchooser \
-    org.kde.kdenlive \
-    org.kde.kolourpaint \
-    org.kde.krita \
-    org.kde.kstars
-
-echo "Installing system utilities from Flathub: ..."
-echo "  Dconf Editor"
-echo "  Flatseal"
-echo "  Solaar"
-echo "  GDM Settings"
-echo "  Fedora Media Writer"
-echo "  qbitTorrent"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
-    ca.desrt.dconf-editor \
-    com.github.tchx84.Flatseal \
-    io.github.pwr_solaar.solaar \
     io.github.realmazharhussain.GdmSettings \
-    org.fedoraproject.MediaWriter \
-    org.qbittorrent.qBittorrent
-
-echo "Installing developments tools from Flathub: ..."
-echo "  Rider"
-echo "  VSCodium"
-echo "  GitHub Desktop"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.jetbrains.Rider \
-    com.vscodium.codium \
-    io.github.shiftey.Desktop
-
-echo "Installing games from Flathub: ..."
-echo "  PokeMMO"
-echo "  Endless Sky"
-echo "  Freedom: Phase 1"
-echo "  Runelite"
-echo "  OpenTTD"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
+    io.github.shiftey.Desktop \
     com.pokemmo.PokeMMO \
     io.github.endless_sky.endless_sky \
     io.github.freedoom.Phase1 \
     net.runelite.RuneLite \
     org.openttd.OpenTTD \
-
-echo "Installing creator utilities from Flathub: ..."
-echo "  OBS Studio"
-echo "  ytDownloader"
-echo "  Audacity"
-echo "  GNU Image Manipulation Program"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.obsproject.Studio \
     io.github.aandrew_me.ytdn \
-    org.audacityteam.Audacity \
-    org.gimp.GIMP
-
-echo "Installing Steam, Launchers and Proton utilities from Flathub: ..."
-echo "  Protontricks"
-echo "  Bottles"
-echo "  Steam"
-echo "  Steam Tinker Launch"
-echo "  ProtonPlus"
-echo "  Lutris"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.github.Matoking.protontricks \
     com.usebottles.bottles \
     com.valvesoftware.Steam \
     com.valvesoftware.Steam.Utility.steamtinkerlaunch \
     com.vysp3r.ProtonPlus \
-    net.lutris.Lutris
-
-echo "Installing all other flatpaks from Flathub: ..."
-echo "Bitwarden"
-echo "Brave"
-echo "FurMark"
-echo "Proton VPN"
-echo "Obsidian"
-echo "Proton Mail"
-echo "ONLYOFFICE Desktop Editors"
-echo "Signal"
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
+    net.lutris.Lutris \
     com.bitwarden.desktop \
-    com.brave.Browser \
     com.geeks3d.furmark \
     com.protonvpn.www \
     md.obsidian.Obsidian \
     me.proton.Mail \
-    org.onlyoffice.desktopeditors \
     org.signal.Signal
 
 echo "All flatpaks installed ..."
@@ -230,10 +134,10 @@ echo "Applying grub theme ..."
 cd "$USER_HOME/Downloads/darkmatter-grub-theme"
 sudo python3 darkmatter-theme.py --install
 
-echo "Replacing system configuration files ..."
+echo "Updating bootloader  ..."
 
 cd "$USER_HOME/Downloads/fedora"
 cp -r grub /etc/default
-cp -r config /etc/selinux
+grub2-mkconfig -o /etc/grub2.cfg
 
 echo "Setup complete!"

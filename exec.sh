@@ -10,11 +10,16 @@ USER_HOME=$(eval echo ~$SUDO_USER)
 echo "Copying system configuration files ..."
 cp -r dnf.conf /etc/dnf
 cp -r config /etc/selinux
+cp -r vconsole.conf /etc
+hostnamectl set-hostname Fedora
 
 echo "Copying user configuration files ..."
+sudo -u "$SUDO_USER" cp -r dconf "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fish "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r ghostty "$USER_HOME/.config"
+sudo -u "$SUDO_USER" cp -r gtk-3.0 "$USER_HOME/.config"
+sudo -u "$SUDO_USER" cp -r mc "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r user-dirs.dirs "$USER_HOME/.config"
 
 echo "Configuring home directories ..."
@@ -40,8 +45,10 @@ dnf remove -y \
     gnome-tour \
     gnome-weather \
     ptyxis \
+    rhythmbox \
     snapshot \
     yelp
+dnf autoremove -y
 
 echo "Enabling additional repositories ..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -63,6 +70,7 @@ dnf install --allowerasing -y \
     bibata-cursor-themes \
     bat \
     brave-browser \
+    btop \
     cargo \
     cmatrix \
     codium \
@@ -74,13 +82,18 @@ dnf install --allowerasing -y \
     ffmpeg \
     fish \
     flatseal \
+    g4music \
     gamescope \
     gimp \
     gnome-extensions-app \
     gnome-tweaks \
-    goverlay ghostty \
+    google-arimo-fonts \
+    google-noto-fonts-all \
+    goverlay \
+    ghostty \
     grub-customizer \
     gstreamer1-plugin-openh264 \
+    htop \
     jetbrains-mono-fonts-all \
     kdenlive \
     kolourpaint \
@@ -94,11 +107,17 @@ dnf install --allowerasing -y \
     papirus-icon-theme \
     protontricks \
     pulseaudio-utils \
+    qalculate-gtk \
     qbittorrent \
     remmina \
+    solaar \
     scrcpy \
     steam-devices \
-    terminus-fonts
+    terminus-fonts \
+    terminus-fonts-console \
+    timeshift
+setfont ter-v32b
+xdg-mime default codium.desktop text/plain
 
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
@@ -147,6 +166,9 @@ echo "Applying grub theme ..."
 
 cd "$USER_HOME/Downloads/darkmatter-grub-theme"
 sudo python3 darkmatter-theme.py --install
+13
+2
+1
 
 echo "Updating bootloader  ..."
 

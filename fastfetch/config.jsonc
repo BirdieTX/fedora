@@ -11,62 +11,62 @@
     },
     "modules": [
         {
-            "key": "[ Distro    ]",
+            "key": "Distro    ==>",
             "type": "os",
             "format": "{2}",
             "keyColor": "cyan"
         },
         {
-            "key": "[ Kernel    ]",
+            "key": "Kernel    ==>",
             "type": "kernel",
             "format": "{2}",
             "keyColor": "cyan"
         },
         {
-            "key": "[ Desktop   ]",
+            "key": "Desktop   ==>",
             "type": "de",
             "format": "{2}",
             "keyColor": "cyan"
         },
         {
-            "key": "[ Packages  ]",
+            "key": "Packages  ==>",
             "type": "packages",
             "format": "{1}",
             "keyColor": "cyan"
         },
         {
-            "key": "[ Processes ]",
+            "key": "Processes ==>",
             "type": "processes",
             "format": "{1}",
             "keyColor": "cyan"
         },
         {
-            "key": "[ Uptime    ]",
+            "key": "Uptime    ==>",
             "type": "uptime",
             "keyColor": "cyan"
         },
         {
-            "key": "[ CPU       ]",
+            "key": "CPU       ==>",
             "type": "cpu",
             "format": "AMD Ryzen 9 7940HS",
             "keyColor": "cyan"
         },
         {
-            "key": "[ iGPU      ]",
+            "key": "iGPU      ==>",
             "type": "gpu",
             "format": "{2}",
             "hideType": "discrete",
             "keyColor": "cyan"
         },
         {
-            "key": "[ dGPU      ]",
+            "key": "dGPU      ==>",
             "type": "gpu",
             "format": "{2}",
             "hideType": "integrated",
             "keyColor": "cyan"
         },
         {
-            "key": "[ RAM       ]",
+            "key": "RAM       ==>",
             "type": "memory",
             "format": "{1}/{2} {3}",
             "keyColor": "cyan"

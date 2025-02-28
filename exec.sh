@@ -7,7 +7,7 @@ fi
 
 USER_HOME=$(eval echo ~$SUDO_USER)
 
-echo "Copying dnf config ..."
+echo "Copying system configuration files ..."
 cp -r dnf.conf /etc/dnf
 cp -r config /etc/selinux
 
@@ -16,6 +16,14 @@ sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fish "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r ghostty "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r user-dirs.dirs "$USER_HOME/.config"
+
+echo "Configuring home directories ..."
+cd "$USER_HOME"
+sudo -u "$SUDO_USER" mv Music Audio
+sudo -u "$SUDO_USER" mv Pictures Images
+sudo -u "$SUDO_USER" mv Desktop .Desktop
+sudo -u "$SUDO_USER" mv Public .Public
+sudo -u "$SUDO_USER" mv Templates .Templates
 
 echo "Cloning repositories as the user ..."
 sudo -u "$SUDO_USER" git clone https://github.com/svenstaro/genact.git "$USER_HOME/.local/share/genact"
@@ -34,8 +42,6 @@ dnf remove -y \
     ptyxis \
     snapshot \
     yelp
-
-dnf autoremove -y
 
 echo "Enabling additional repositories ..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -92,11 +98,11 @@ dnf install --allowerasing -y \
     remmina \
     scrcpy \
     steam-devices \
-    terminus-fonts \
-    vlc
+    terminus-fonts
 
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
+dnf autoremove -y
 
 echo "Checking for flatpak updates ..."
 sudo -u "$SUDO_USER" flatpak update -y
@@ -108,22 +114,30 @@ sudo -u "$SUDO_USER" flatpak install flathub -y \
     io.github.realmazharhussain.GdmSettings \
     com.jetbrains.Rider \
     io.github.shiftey.Desktop \
-    com.pokemmo.PokeMMO \
+    com.pokemmo.PokeMMO
+
+sudo -u "$SUDO_USER" flatpak install flathub -y \
     io.github.endless_sky.endless_sky \
     io.github.freedoom.Phase1 \
     net.runelite.RuneLite \
     org.openttd.OpenTTD \
-    com.obsproject.Studio \
+    com.obsproject.Studio
+
+sudo -u "$SUDO_USER" flatpak install flathub -y \
     io.github.aandrew_me.ytdn \
     com.github.Matoking.protontricks \
     com.usebottles.bottles \
     com.valvesoftware.Steam \
     com.valvesoftware.Steam.Utility.steamtinkerlaunch \
+
+sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.vysp3r.ProtonPlus \
     net.lutris.Lutris \
     com.bitwarden.desktop \
     com.geeks3d.furmark \
-    com.protonvpn.www \
+    com.protonvpn.www
+
+sudo -u "$SUDO_USER" flatpak install flathub -y \
     md.obsidian.Obsidian \
     me.proton.Mail \
     org.signal.Signal

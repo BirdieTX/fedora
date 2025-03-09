@@ -10,10 +10,9 @@ USER_HOME=$(eval echo ~$SUDO_USER)
 echo "Copying system configuration files ..."
 cp -r dnf.conf /etc/dnf
 cp -r config /etc/selinux
-cp -r vconsole.conf /etc
-hostnamectl set-hostname Fedora
 
 echo "Copying user configuration files ..."
+sudo -u "$SUDO_USER" cp -r background "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r dconf "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fish "$USER_HOME/.config"
@@ -30,7 +29,7 @@ sudo -u "$SUDO_USER" mv Desktop .Desktop
 sudo -u "$SUDO_USER" mv Public .Public
 sudo -u "$SUDO_USER" mv Templates .Templates
 
-echo "Cloning repositories as the user ..."
+echo "Cloning repositories ..."
 sudo -u "$SUDO_USER" git clone https://github.com/svenstaro/genact.git "$USER_HOME/.local/share/genact"
 sudo -u "$SUDO_USER" git clone --depth 1 https://gitlab.com/VandalByte/darkmatter-grub-theme.git "$USER_HOME/Downloads/darkmatter-grub-theme"
 
@@ -53,6 +52,7 @@ dnf autoremove -y
 echo "Enabling additional repositories ..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 dnf copr enable herzen/davinci-helper -y
+dnf copr enable kylegospo/grub-btrfs -y
 dnf copr enable peterwu/rendezvous -y
 dnf copr enable pgdev/ghostty -y
 dnf copr enable tomaszgasior/mushrooms -y
@@ -86,17 +86,29 @@ dnf install --allowerasing -y \
     gamescope \
     gimp \
     gnome-extensions-app \
+    gnome-shell-extension-appindicator \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-blur-my-shell \
+    gnome-shell-extension-just-perfection \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
     gnome-tweaks \
     google-arimo-fonts \
     google-noto-fonts-all \
     goverlay \
     ghostty \
+    grub-btrfs-timeshift \
     grub-customizer \
     gstreamer1-plugin-openh264 \
     htop \
+    inotify-tools \
     jetbrains-mono-fonts-all \
     kdenlive \
     kolourpaint \
+    libcurl-devel \
+    libxcrypt-compat \
     mangohud \
     memtest86+ \
     mesa-va-drivers-freeworld \
@@ -114,7 +126,6 @@ dnf install --allowerasing -y \
     scrcpy \
     steam-devices \
     terminus-fonts \
-    terminus-fonts-console \
     timeshift
 setfont ter-v32b
 xdg-mime default codium.desktop text/plain

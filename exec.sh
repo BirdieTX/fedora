@@ -101,14 +101,19 @@ dnf install --allowerasing -y \
     ghostty \
     grub-btrfs-timeshift \
     grub-customizer \
+    gstreamer1-plugins-bad-freeworld \
+    gstreamer-plugins-espeak \
     gstreamer1-plugin-openh264 \
     htop \
     inotify-tools \
     jetbrains-mono-fonts-all \
     kdenlive \
     kolourpaint \
+    libavcodec-freeworld \
     libcurl-devel \
+    libheif-freeworld \
     libxcrypt-compat \
+    lutris \
     mangohud \
     memtest86+ \
     mesa-va-drivers-freeworld \
@@ -117,6 +122,7 @@ dnf install --allowerasing -y \
     mozilla-openh264 \
     nautilus-admin \
     papirus-icon-theme \
+    pipewire-codec-aptx \
     protontricks \
     pulseaudio-utils \
     qalculate-gtk \
@@ -126,8 +132,8 @@ dnf install --allowerasing -y \
     scrcpy \
     steam-devices \
     terminus-fonts \
-    timeshift
-setfont ter-v32b
+    timeshift \
+    vlc-plugins-freeworld
 xdg-mime default codium.desktop text/plain
 
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
@@ -158,14 +164,14 @@ sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.github.Matoking.protontricks \
     com.usebottles.bottles \
     com.valvesoftware.Steam \
-    com.valvesoftware.Steam.Utility.steamtinkerlaunch \
+    com.valvesoftware.Steam.Utility.steamtinkerlaunch
 
 sudo -u "$SUDO_USER" flatpak install flathub -y \
     com.vysp3r.ProtonPlus \
-    net.lutris.Lutris \
     com.bitwarden.desktop \
     com.geeks3d.furmark \
-    com.protonvpn.www
+    com.protonvpn.www \
+    md.obsidian.Obsidian
 
 sudo -u "$SUDO_USER" flatpak install flathub -y \
     md.obsidian.Obsidian \
@@ -177,9 +183,6 @@ echo "Applying grub theme ..."
 
 cd "$USER_HOME/Downloads/darkmatter-grub-theme"
 sudo python3 darkmatter-theme.py --install
-13
-2
-1
 
 echo "Updating bootloader  ..."
 

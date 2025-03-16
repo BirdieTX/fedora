@@ -66,6 +66,7 @@ dnf install -y \
 echo "Installing system packages ..."
 dnf update --refresh -y
 dnf install --allowerasing -y \
+    antimicrox \
     audacity \
     bibata-cursor-themes \
     bat \
@@ -123,7 +124,6 @@ dnf install --allowerasing -y \
     nautilus-admin \
     papirus-icon-theme \
     pipewire-codec-aptx \
-    protontricks \
     pulseaudio-utils \
     qalculate-gtk \
     qbittorrent \

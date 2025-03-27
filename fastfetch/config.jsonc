@@ -48,7 +48,7 @@
         {
             "key": "CPU       ==>",
             "type": "cpu",
-            "format": "AMD Ryzen 9 7940HS",
+            "format": "{1}",
             "keyColor": "cyan"
         },
         {

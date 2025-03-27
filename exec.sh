@@ -12,12 +12,9 @@ cp -r dnf.conf /etc/dnf
 cp -r config /etc/selinux
 
 echo "Copying user configuration files ..."
-sudo -u "$SUDO_USER" cp -r background "$USER_HOME/.config"
-sudo -u "$SUDO_USER" cp -r dconf "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r fish "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r ghostty "$USER_HOME/.config"
-sudo -u "$SUDO_USER" cp -r gtk-3.0 "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r mc "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r user-dirs.dirs "$USER_HOME/.config"
 
@@ -90,7 +87,6 @@ dnf install --allowerasing -y \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-apps-menu \
     gnome-shell-extension-background-logo \
-    gnome-shell-extension-blur-my-shell \
     gnome-shell-extension-just-perfection \
     gnome-shell-extension-launch-new-instance \
     gnome-shell-extension-places-menu \

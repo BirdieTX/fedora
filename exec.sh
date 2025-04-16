@@ -13,7 +13,6 @@ cp -r config /etc/selinux
 
 echo "Copying user configuration files ..."
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
-sudo -u "$SUDO_USER" cp -r fish "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r ghostty "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r mc "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r user-dirs.dirs "$USER_HOME/.config"
@@ -26,11 +25,13 @@ sudo -u "$SUDO_USER" mv Desktop .Desktop
 sudo -u "$SUDO_USER" mv Public .Public
 sudo -u "$SUDO_USER" mv Templates .Templates
 
-echo "Cloning repositories ..."
-sudo -u "$SUDO_USER" git clone https://github.com/svenstaro/genact.git "$USER_HOME/.local/share/genact"
-sudo -u "$SUDO_USER" git clone --depth 1 https://gitlab.com/VandalByte/darkmatter-grub-theme.git "$USER_HOME/Downloads/darkmatter-grub-theme"
-
-echo "Removing bullshit from system ..."
+echo "Removing packages from system ..."
+echo "Starting dnf in 3 ..."
+sleep 1
+echo "2 ..."
+sleep 1
+echo "1 ..."
+sleep 1
 dnf remove -y \
     abrt \
     firefox \
@@ -50,10 +51,6 @@ echo "Enabling additional repositories ..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 dnf copr enable herzen/davinci-helper -y
 dnf copr enable kylegospo/grub-btrfs -y
-dnf copr enable peterwu/rendezvous -y
-dnf copr enable pgdev/ghostty -y
-dnf copr enable tomaszgasior/mushrooms -y
-dnf copr enable zeno/scrcpy -y
 rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
 printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h\n" | sudo tee -a /etc/yum.repos.d/vscodium.repo
 dnf install -y \
@@ -65,7 +62,6 @@ dnf update --refresh -y
 dnf install --allowerasing -y \
     antimicrox \
     audacity \
-    bibata-cursor-themes \
     bat \
     brave-browser \
     btop \
@@ -73,14 +69,14 @@ dnf install --allowerasing -y \
     cmatrix \
     codium \
     davinci-helper \
+    decibels \
     dconf-editor \
     discord \
+    elisa-player \
     eza \
     fastfetch \
     ffmpeg \
-    fish \
     flatseal \
-    g4music \
     gamescope \
     gimp \
     gnome-extensions-app \
@@ -94,13 +90,11 @@ dnf install --allowerasing -y \
     gnome-tweaks \
     google-arimo-fonts \
     google-noto-fonts-all \
-    goverlay \
-    ghostty \
     grub-btrfs-timeshift \
-    grub-customizer \
     gstreamer1-plugins-bad-freeworld \
     gstreamer-plugins-espeak \
     gstreamer1-plugin-openh264 \
+    hardinfo2 \
     htop \
     inotify-tools \
     jetbrains-mono-fonts-all \
@@ -117,15 +111,16 @@ dnf install --allowerasing -y \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
-    nautilus-admin \
     papirus-icon-theme \
     pipewire-codec-aptx \
+    protontricks \
     pulseaudio-utils \
     qalculate-gtk \
     qbittorrent \
     remmina \
     solaar \
     scrcpy \
+    steam \
     steam-devices \
     terminus-fonts \
     timeshift \
@@ -142,48 +137,29 @@ sudo -u "$SUDO_USER" flatpak update -y
 echo "Installing flatpaks from Flathub: ..."
 
 sudo -u "$SUDO_USER" flatpak install flathub -y \
-    org.gnome.Decibels \
-    io.github.realmazharhussain.GdmSettings \
-    com.jetbrains.Rider \
-    io.github.shiftey.Desktop \
-    com.pokemmo.PokeMMO
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
-    io.github.endless_sky.endless_sky \
-    io.github.freedoom.Phase1 \
-    net.runelite.RuneLite \
-    org.openttd.OpenTTD \
-    com.obsproject.Studio
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
-    io.github.aandrew_me.ytdn \
-    com.github.Matoking.protontricks \
-    com.usebottles.bottles \
-    com.valvesoftware.Steam \
-    com.valvesoftware.Steam.Utility.steamtinkerlaunch
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
-    com.vysp3r.ProtonPlus \
     com.bitwarden.desktop \
     com.geeks3d.furmark \
+    com.jetbrains.Rider \
+    com.obsproject.Studio \
+    com.pokemmo.PokeMMO \
     com.protonvpn.www \
-    md.obsidian.Obsidian
-
-sudo -u "$SUDO_USER" flatpak install flathub -y \
+    com.usebottles.bottles \
+    com.vysp3r.ProtonPlus \
+    io.github.aandrew_me.ytdn \
+    io.github.freedoom.Phase1 \
+    io.github.endless_sky.endless_sky \
+    io.github.realmazharhussain.GdmSettings \
+    io.github.shiftey.Desktop \
+    io.missioncenter.MissionCenter \
     md.obsidian.Obsidian \
     me.proton.Mail \
+    net.runelite.RuneLite \
+    org.openttd.OpenTTD \
     org.signal.Signal
-
 echo "All flatpaks installed ..."
-echo "Applying grub theme ..."
-
-cd "$USER_HOME/Downloads/darkmatter-grub-theme"
-sudo python3 darkmatter-theme.py --install
-
 echo "Updating bootloader  ..."
-
 cd "$USER_HOME/Downloads/fedora"
 cp -r grub /etc/default
 grub2-mkconfig -o /etc/grub2.cfg
-
+fastfetch -c examples/10
 echo "Setup complete!"

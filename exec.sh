@@ -13,7 +13,7 @@ cp -r config /etc/selinux
 
 echo "Copying user configuration files ..."
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"
-sudo -u "$SUDO_USER" cp -r ghostty "$USER_HOME/.config"
+sudo -u "$SUDO_USER" cp -r kitty "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r mc "$USER_HOME/.config"
 sudo -u "$SUDO_USER" cp -r user-dirs.dirs "$USER_HOME/.config"
 
@@ -34,16 +34,9 @@ echo "1 ..."
 sleep 1
 dnf remove -y \
     abrt \
+    cosmic-edit \
+    cosmic-store \
     firefox \
-    gnome-calendar \
-    gnome-connections \
-    gnome-contacts \
-    gnome-maps \
-    gnome-tour \
-    gnome-weather \
-    ptyxis \
-    rhythmbox \
-    snapshot \
     yelp
 dnf autoremove -y
 
@@ -72,22 +65,10 @@ dnf install --allowerasing -y \
     decibels \
     dconf-editor \
     discord \
-    elisa-player \
-    eza \
     fastfetch \
     ffmpeg \
     flatseal \
-    gamescope \
     gimp \
-    gnome-extensions-app \
-    gnome-shell-extension-appindicator \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-just-perfection \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-tweaks \
     google-arimo-fonts \
     google-noto-fonts-all \
     grub-btrfs-timeshift \
@@ -111,6 +92,7 @@ dnf install --allowerasing -y \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
+    nautilus \
     papirus-icon-theme \
     pipewire-codec-aptx \
     protontricks \

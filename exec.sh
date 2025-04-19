@@ -25,6 +25,10 @@ sudo -u "$SUDO_USER" mv Desktop .Desktop
 sudo -u "$SUDO_USER" mv Public .Public
 sudo -u "$SUDO_USER" mv Templates .Templates
 
+echo "Cloning bash theme ..."
+sudo -u "$SUDO_USER" mkdir -p .bash/themes/agnoster-bash
+sudo -u "$SUDO_USER" git clone https://github.com/speedenator/agnoster-bash.git .bash/themes/agnoster-bash
+
 echo "Removing packages from system ..."
 echo "Starting dnf in 3 ..."
 sleep 1
@@ -37,6 +41,16 @@ dnf remove -y \
     cosmic-edit \
     cosmic-store \
     firefox \
+    gnome-calendar \
+    gnome-connections \
+    gnome-contacts \
+    gnome-maps \
+    gnome-tour \
+    gnome-weather \
+    okular \
+    ptyxis \
+    rhythmbox \
+    snapshot \
     yelp
 dnf autoremove -y
 
@@ -44,14 +58,27 @@ echo "Enabling additional repositories ..."
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 dnf copr enable herzen/davinci-helper -y
 dnf copr enable kylegospo/grub-btrfs -y
+dnf copr enable tomaszgasior/mushrooms -y
 rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
 printf "[gitlab.com_paulcarroty_vscodium_repo]\nname=download.vscodium.com\nbaseurl=https://download.vscodium.com/rpms/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg\nmetadata_expire=1h\n" | sudo tee -a /etc/yum.repos.d/vscodium.repo
 dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 
-echo "Installing system packages ..."
+echo "System update in 3 ..."
+sleep 1
+echo "2 ..."
+sleep 1
+echo "1 ..."
+sleep 1
 dnf update --refresh -y
+
+echo "Installing system packages in 3 ..."
+sleep 1
+echo "2 ..."
+sleep 1
+echo "1 ..."
+sleep 1
 dnf install --allowerasing -y \
     antimicrox \
     audacity \
@@ -69,6 +96,10 @@ dnf install --allowerasing -y \
     ffmpeg \
     flatseal \
     gimp \
+    gnome-extensions-app \
+    gnome-shell-extension-appindicator \
+    gnome-shell-extension-just-perfection \
+    gnome-tweaks \
     google-arimo-fonts \
     google-noto-fonts-all \
     grub-btrfs-timeshift \
@@ -79,8 +110,12 @@ dnf install --allowerasing -y \
     htop \
     inotify-tools \
     jetbrains-mono-fonts-all \
+    kde-connect \
+    kde-connect-nautilus \
     kdenlive \
     kolourpaint \
+    kstars \
+    kvantum \
     libavcodec-freeworld \
     libcurl-devel \
     libheif-freeworld \
@@ -92,16 +127,15 @@ dnf install --allowerasing -y \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
-    nautilus \
+    nautilus-admin \
     papirus-icon-theme \
     pipewire-codec-aptx \
     protontricks \
     pulseaudio-utils \
     qalculate-gtk \
     qbittorrent \
+    qt6ct \
     remmina \
-    solaar \
-    scrcpy \
     steam \
     steam-devices \
     terminus-fonts \
@@ -143,5 +177,9 @@ echo "Updating bootloader  ..."
 cd "$USER_HOME/Downloads/fedora"
 cp -r grub /etc/default
 grub2-mkconfig -o /etc/grub2.cfg
+
+echo "Setting up greeter ..."
+systemctl disable cosmic-greeter
+systemctl enable gdm
 fastfetch -c examples/10
 echo "Setup complete!"

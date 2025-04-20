@@ -10,6 +10,9 @@ USER_HOME=$(eval echo ~$SUDO_USER)
 echo "Copying system configuration files ..."
 cp -r dnf.conf /etc/dnf
 cp -r config /etc/selinux
+mv fedora-mac-style /usr/share/plymouth/themes/fedora-mac-style
+plymouth-set-default-theme -R fedora-mac-style
+dracut --regenerate-all -f
 
 echo "Copying user configuration files ..."
 sudo -u "$SUDO_USER" cp -r fastfetch "$USER_HOME/.config"

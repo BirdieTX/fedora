@@ -1,6 +1,15 @@
 #!/bin/bash
 
 if [ "$EUID" -ne 0 ]; then
+
+abort_on_fail() {
+    "$@"
+    local status=$?
+    if [ $status -ne 0 ]; then
+        echo "Error: command '$*' failed with exit code $status" >&2
+        exit $status
+    fi
+}
     echo "Please run as root using sudo!"
     exit 1
 fi
@@ -48,13 +57,13 @@ dnf remove -y \
 dnf autoremove -y
 
 echo "Enabling additional repositories ..."
-dnf copr enable -y kylegospo/grub-btrfs
-dnf copr enable -y herzen/davinci-helper
-dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+abort_on_fail dnf copr enable -y kylegospo/grub-btrfs
+abort_on_fail dnf copr enable -y herzen/davinci-helper
+abort_on_fail dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
 echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-dnf install -y \
+abort_on_fail dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+abort_on_fail dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 
@@ -64,7 +73,7 @@ echo "2 ..."
 sleep 1
 echo "1 ..."
 sleep 1
-dnf update --refresh -y
+abort_on_fail dnf update --refresh -y
 
 echo "Installing system packages in 3 ..."
 sleep 1
@@ -72,7 +81,7 @@ echo "2 ..."
 sleep 1
 echo "1 ..."
 sleep 1
-dnf install --allowerasing -y \
+abort_on_fail dnf install --allowerasing -y \
     antimicrox \
     audacity \
     bat \
@@ -80,7 +89,7 @@ dnf install --allowerasing -y \
     btop \
     cargo \
     cmatrix \
-    codium \
+    code \
     davinci-helper \
     decibels \
     dconf-editor \
@@ -121,6 +130,7 @@ dnf install --allowerasing -y \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
+    obs-studio \
     papirus-icon-theme \
     pipewire-codec-aptx \
     protontricks \
@@ -138,6 +148,8 @@ xdg-mime default code.desktop text/plain
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 dnf autoremove -y
+dnf copr disable kylegospo/grub-btrfs -y
+dnf copr disable herzen/davinci-helper -y
 
 echo "Checking for flatpak updates ..."
 sudo -u "$SUDO_USER" flatpak update -y

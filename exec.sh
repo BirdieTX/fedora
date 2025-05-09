@@ -1,44 +1,64 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]; then
+set -e
 
-abort_on_fail() {
-    "$@"
-    local status=$?
-    if [ $status -ne 0 ]; then
-        echo "Error: command '$*' failed with exit code $status" >&2
-        exit $status
-    fi
-}
-    echo "Please run as root using sudo!"
+END='\033[0m\n'
+RED='\033[0;31m'
+GRN='\033[0;32m'
+CYN='\033[0;36m'
+
+if [ "$EUID" -ne 0 ]; then
+    printf $RED"Please run as root using sudo!"$END
     exit 1
 fi
 
-USER_HOME=$(eval echo ~$SUDO_USER)
+USER_HOME=$(eval printf ~$SUDO_USER)
 
-echo "Copying system configuration files ..."
-cp -r dnf.conf /etc/dnf
-cp -r config /etc/selinux
-cp -r Bibata-Modern-Classic /usr/share/icons
-mv fedora-mac-style /usr/share/plymouth/themes/fedora-mac-style
-plymouth-set-default-theme -R fedora-mac-style
-dracut --regenerate-all -f
+printf $CYN"Copying system configuration files ..."$END
 
-echo "Copying user configuration files ..."
-sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
-sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop .Desktop
+printf $CYN"Adding dnf config ..."$END
+    cp -r dnf.conf /etc/dnf || printf $RED"Failed to copy dnf config ..."$END && sleep 2
+    printf $GRN "Dnf config added ..."$END && sleep 1
 
-echo "Cloning bash theme ..."
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME"/.bash/themes/agnoster-bash
-sudo -u "$SUDO_USER" git clone https://github.com/speedenator/agnoster-bash.git "$USER_HOME"/.bash/themes/agnoster-bash
+printf $CYN"Adding selinux config ..."$END
+    cp -r config /etc/selinux || printf $RED"Failed to copy selinux config ..."$END && sleep 2
+    printf $GRN "Selinux config added ..."$END && sleep 1
 
-echo "Removing packages from system ..."
-echo "Starting dnf in 3 ..."
-sleep 1
-echo "2 ..."
-sleep 1
-echo "1 ..."
-sleep 1
+printf $CYN"Adding Bibata cursor ..."$END
+    cp -r Bibata-Modern-Classic /usr/share/icons || printf $RED"Failed to copy selinux config ..."$END && sleep 2
+    printf $GRN "Bibata cursor installed ..."$END && sleep 1
+
+printf $CYN"Adding plymouth theme ..."$END
+    cp -r fedora-mac-style /usr/share/plymouth/themes || printf $RED"Failed to copy plymouth theme ..."$END && sleep 2
+    printf $GRN "Plymouth theme was successfully added to the system resources folder ..."$END && sleep 1
+
+printf $CYN"Installing plymouth theme ..."$END
+    plymouth-set-default-theme -R fedora-mac-style || printf $RED"Failed to install plymouth theme ..."$END && sleep 2
+    printf $GRN "Plymouth theme installed ..."$END && sleep 1
+
+printf $CYN"Finishing plymouth theme setup ..."$END && sleep 2
+    dracut --regenerate-all -f || printf $RED"Plymouth theme setup failed ..."$END && sleep 1
+    printf $GRN "Plymouth setup complete ..."$END
+
+printf $CYN"Copying user configuration files ..."$END
+
+printf $CYN"Copying .bashrc config ..."$END
+    sudo -u "$SUDO_USER" cp -r .bashrc "$USER_HOME" || printf $RED"WARNING: FAILED TO COPY BASHRC FILE TO HOME DIRECTORY!"$END
+    printf $GRN".bashrc file replaced in home directory ..."$END
+    printf $CYN"Copying .bashrc.d folder to home directory ..."$END
+    sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME" || printf $RED"Failed to copy .bashrc.d folder to home directory ..."$END
+    printf $GRN".bashrc.d folder copied to home directory ..."$END
+
+printf $CYN"Copying user config folder ..."$END
+    sudo -u "$SUDO_USER" cp -r .config "$USER_HOME" || printf $RED"Failed to copy .config files to ~/.config"$END && sleep 2
+    printf $GRN "User config files added ..."$END && sleep 1
+
+printf $CYN"Hiding Desktop folder ..."$END
+    sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop .Desktop || printf $RED"Failed to hide Desktop folder ..."$END && sleep 2
+    printf $GRN "Desktop folder has been hidden ..."$END && sleep 1
+
+printf $CYN"Removing packages from system ..."$END && sleep 1
+
 dnf remove -y \
     abrt \
     firefox \
@@ -49,39 +69,48 @@ dnf remove -y \
     gnome-text-editor \
     gnome-tour \
     gnome-weather \
+    malcontent-control \
     ptyxis \
     rhythmbox \
     snapshot \
     totem \
-    yelp
-dnf autoremove -y
+    yelp || printf $RED"Failed to resolve transaction ..."$END && sleep 2
+    dnf autoremove -y
+    printf $GRN "All unwanted packages removed ..."$END && sleep 1
 
-echo "Enabling additional repositories ..."
-abort_on_fail dnf copr enable -y kylegospo/grub-btrfs
-abort_on_fail dnf copr enable -y herzen/davinci-helper
-abort_on_fail dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-rpm --import https://packages.microsoft.com/keys/microsoft.asc
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-abort_on_fail dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-abort_on_fail dnf install -y \
+printf $CYN"Enabling additional repositories ..."$END
+
+printf "Adding copr repositories ..."$END
+    dnf copr enable -y kylegospo/grub-btrfs
+    printf $GRN "grub-btrfs added ..."$END && sleep 1
+    dnf copr enable -y herzen/davinci-helper
+    printf $GRN "davinci-helper added ..."$END && sleep 1
+
+printf $CYN"Adding Brave Browser rpm repository ..."$END
+    dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    printf $GRN "Brave repofile imported ..."$END && sleep 1
+
+printf $CYN"Adding Visual Studio Code rpm repository ..."$END
+    rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    printf -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    printf $GRN "Visual Studio Code repository added ..."$END && sleep 1
+
+printf $CYN"Adding Terra repository ..."$END
+    dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+    printf $GRN "Terra repository installed ..."$END && sleep 1
+
+printf $CYN"Adding RPM Fusion repositories ..."$END
+
+dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+    printf $GRN "RPM Fusion repositories installed ..."$END && sleep 1
 
-echo "System update in 3 ..."
-sleep 1
-echo "2 ..."
-sleep 1
-echo "1 ..."
-sleep 1
-abort_on_fail dnf update --refresh -y
+printf $CYN"Refreshing mirrorlist and performing system update ..."$END
+    dnf upgrade --refresh -y
 
-echo "Installing system packages in 3 ..."
-sleep 1
-echo "2 ..."
-sleep 1
-echo "1 ..."
-sleep 1
-abort_on_fail dnf install --allowerasing -y \
+printf $CYN"Installing system rpm packages ..."$END
+dnf install --allowerasing -y \
     antimicrox \
     audacity \
     bat \
@@ -126,10 +155,12 @@ abort_on_fail dnf install --allowerasing -y \
     libxcrypt-compat \
     lutris \
     memtest86+ \
+    mercurial \
     mesa-va-drivers-freeworld \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
+    neovim \
     obs-studio \
     papirus-icon-theme \
     pipewire-codec-aptx \
@@ -138,47 +169,81 @@ abort_on_fail dnf install --allowerasing -y \
     qalculate-gtk \
     qbittorrent \
     qt6ct \
+    radeontop \
     remmina \
     steam \
     terminus-fonts \
     timeshift \
+    vim \
+    vlc \
     vlc-plugins-freeworld
-xdg-mime default code.desktop text/plain
+    printf $GRN "System rpm packages installed ..."$END && sleep 1
 
-dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
-dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
-dnf autoremove -y
-dnf copr disable kylegospo/grub-btrfs -y
-dnf copr disable herzen/davinci-helper -y
+printf $CYN"Setting default text editor to Visual Studio Code ..."$END
+    xdg-mime default code.desktop text/plain || printf $RED"Failed to change default text editor to Visual Studio Code ..."$END && sleep 2
+    printf $GRN "Default text editor changed to Visual Studio Code ..."$END && sleep 1
 
-echo "Checking for flatpak updates ..."
-sudo -u "$SUDO_USER" flatpak update -y
+printf $CYN"Switching mesa drivers to freeworld ..."$END
+    dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
+    dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
+    printf $GRN "Mesa freeworld drivers installed ..."$END
 
-echo "Installing flatpaks from Flathub: ..."
+printf $CYN"Removing unused packages ..."$END
+    dnf autoremove -y || printf $RED"Failed to resolve transaction ..."$END && sleep 2
+    printf $GRN "Unused packages successfully removed ..." && sleep 1
 
-sudo -u "$SUDO_USER" flatpak install flathub -y com.bitwarden.desktop
-sudo -u "$SUDO_USER" flatpak install flathub -y com.geeks3d.furmark
-sudo -u "$SUDO_USER" flatpak install flathub -y com.jetbrains.Rider
-sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
-sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
-sudo -u "$SUDO_USER" flatpak install flathub -y com.usebottles.bottles
-sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.freedoom.Phase1
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.endless_sky.endless_sky
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.shiftey.Desktop
-sudo -u "$SUDO_USER" flatpak install flathub -y io.missioncenter.MissionCenter
-sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
-sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Mail
-sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
-sudo -u "$SUDO_USER" flatpak install flathub -y org.openttd.OpenTTD
-sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
+printf $CYN"Disabling extra repositories ..."$END
+    printf $CYN"Disabling brave rpm repository ..."$END
+    config-manager setopt brave-browser.enabled=0 || printf $RED"Failed to disable brave-browser repo ..." && sleep 2
+    printf $GRN"Brave rpm repository disabled ..."
+    printf $CYN"Disabling Visual Studio Code rpm repository ..."
+    dnf config-manager setopt code.enabled=0 || printf $RED"Failed to disable code repo ..." && sleep 2
+    printf $GRN"VSCode repo disabled ..."$END
+    printf $CYN"Disabling grub-btfs ..."$END
+    dnf copr disable kylegospo/grub-btrfs -y || printf $RED"Failed to disable grub-btfs ..."$END && sleep 2
+    printf $GRN "grub-btrfs disabled ..."$END && sleep 1
+    printf $CYN"Disabling davinci-helper ..."$END
+    dnf copr disable herzen/davinci-helper -y || printf $RED"Failed to disable davinci-helper"$END && sleep 2
+    printf $GRN "davinci-helper disabled ..."$END && sleep 1
 
-echo "All flatpaks installed ..."
-echo "Updating bootloader  ..."
-cp -r grub /etc/default
-grub2-mkfont -s 25 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf
-grub2-mkconfig -o /etc/grub2.cfg
-echo "Setup complete!"
+printf $CYN"Checking for flatpak updates ..."$END
+    sudo -u "$SUDO_USER" flatpak update -y
+    printf $GRN "Flatpaks are up to date ..."$END
+
+printf $CYN"Installing flatpaks from Flathub ..."$END
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.bitwarden.desktop
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.geeks3d.furmark
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.jetbrains.Rider
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.usebottles.bottles
+    sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.freedoom.Phase1
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.endless_sky.endless_sky
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.shiftey.Desktop
+    sudo -u "$SUDO_USER" flatpak install flathub -y io.missioncenter.MissionCenter
+    sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
+    sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Mail
+    sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
+    sudo -u "$SUDO_USER" flatpak install flathub -y org.openttd.OpenTTD
+    sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
+    printf $GRN "All flatpaks installed ..."$END && sleep 1
+
+printf $CYN"Disabling Network Manager wait online service ..."$END
+    systemctl disable NetworkManager-wait-online.service || printf $RED"Failed to disable NetworkManager-wait-online.service"$END
+    printf $GRN"NetworkManager-wait-online.service disabled ..."$END
+
+printf $CYN"Updating bootloader  ...$END"
+    printf $CYN"Updating grub config file ..."$END
+    cp -r grub /etc/default || printf $RED"Failed to update grub config file ..."$END && sleep 2
+    printf $GRN "Grub config file added ..."$END && sleep 1
+    printf $CYN"Adding JetBrains Mono font to grub ..."$END
+    grub2-mkfont -s 25 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf || printf $RED"Failed to make font ..." && sleep 2
+    printf $GRN "JetBrains Mono font added ..."$END
+    printf $CYN"Updating grub ..."$END
+    grub2-mkconfig -o /etc/grub2.cfg || printf $RED"Failed to update grub ..."$END && sleep 2
+
+printf $CYN"Setup complete!"$END
 fastfetch -c examples/10

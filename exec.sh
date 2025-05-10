@@ -92,7 +92,7 @@ printf $CYN"Adding Brave Browser rpm repository ..."$END
 
 printf $CYN"Adding Visual Studio Code rpm repository ..."$END
     rpm --import https://packages.microsoft.com/keys/microsoft.asc
-    printf -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
+    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
     printf $GRN "Visual Studio Code repository added ..."$END && sleep 1
 
 printf $CYN"Adding Terra repository ..."$END
@@ -131,6 +131,7 @@ dnf install --allowerasing -y \
     gimp \
     ghostty \
     gnome-extensions-app \
+    gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
     gnome-tweaks \
     google-arimo-fonts \
@@ -160,9 +161,11 @@ dnf install --allowerasing -y \
     mesa-vdpau-drivers-freeworld \
     mc \
     mozilla-openh264 \
+    nautilus-gsconnect \
     neovim \
     obs-studio \
     papirus-icon-theme \
+    pavucontrol \
     pipewire-codec-aptx \
     protontricks \
     pulseaudio-utils \

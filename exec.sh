@@ -195,20 +195,6 @@ printf $CYN"Removing unused packages ..."$END
     dnf autoremove -y || printf $RED"Failed to resolve transaction ..."$END && sleep 2
     printf $GRN "Unused packages successfully removed ..." && sleep 1
 
-printf $CYN"Disabling extra repositories ..."$END
-    printf $CYN"Disabling brave rpm repository ..."$END
-    config-manager setopt brave-browser.enabled=0 || printf $RED"Failed to disable brave-browser repo ..." && sleep 2
-    printf $GRN"Brave rpm repository disabled ..."
-    printf $CYN"Disabling Visual Studio Code rpm repository ..."
-    dnf config-manager setopt code.enabled=0 || printf $RED"Failed to disable code repo ..." && sleep 2
-    printf $GRN"VSCode repo disabled ..."$END
-    printf $CYN"Disabling grub-btfs ..."$END
-    dnf copr disable kylegospo/grub-btrfs -y || printf $RED"Failed to disable grub-btfs ..."$END && sleep 2
-    printf $GRN "grub-btrfs disabled ..."$END && sleep 1
-    printf $CYN"Disabling davinci-helper ..."$END
-    dnf copr disable herzen/davinci-helper -y || printf $RED"Failed to disable davinci-helper"$END && sleep 2
-    printf $GRN "davinci-helper disabled ..."$END && sleep 1
-
 printf $CYN"Checking for flatpak updates ..."$END
     sudo -u "$SUDO_USER" flatpak update -y
     printf $GRN "Flatpaks are up to date ..."$END

@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# This is script is currently broken, don't use  it
+
 set -e
 
-END='\033[0m\n'
+END='\033[0m\'
 RED='\033[0;31m'
 GRN='\033[0;32m'
 CYN='\033[0;36m'
@@ -16,49 +18,61 @@ USER_HOME=$(eval printf ~$SUDO_USER)
 
 printf $CYN"Copying system configuration files ..."$END
 
-printf $CYN"Adding dnf config ..."$END
-    cp -r dnf.conf /etc/dnf || printf $RED"Failed to copy dnf config ..."$END && sleep 2
-    printf $GRN "Dnf config added ..."$END && sleep 1
+OUT='DNF Config added successfully ...'
+printf $CYN"Adding DNF config ..."$END
+    cp -r dnf.conf /etc/dnf || OUT="Failed to copy dnf config ..."
+    echo $OUT
 
-printf $CYN"Adding selinux config ..."$END
-    cp -r config /etc/selinux || printf $RED"Failed to copy selinux config ..."$END && sleep 2
-    printf $GRN "Selinux config added ..."$END && sleep 1
+OUT='Selinux set to permissive ...'
+printf $CYN"Adding Selinux config ..."$END
+    cp -r config /etc/selinux || OUT='Failed to change Selnux config ...'
+    echo $OUT
 
+OUT='Bibata cursor added successfully ...'
 printf $CYN"Adding Bibata cursor ..."$END
-    cp -r Bibata-Modern-Classic /usr/share/icons || printf $RED"Failed to copy selinux config ..."$END && sleep 2
-    printf $GRN "Bibata cursor installed ..."$END && sleep 1
+    cp -r Bibata-Modern-Classic /usr/share/icons || OUT='Failed to add Bibata cursor ...'
+    echo $OUT
 
-printf $CYN"Adding plymouth theme ..."$END
-    cp -r fedora-mac-style /usr/share/plymouth/themes || printf $RED"Failed to copy plymouth theme ..."$END && sleep 2
-    printf $GRN "Plymouth theme was successfully added to the system resources folder ..."$END && sleep 1
+OUT='Mac style Plymouth theme added to Plymouth themes folder ...'
+printf $CYN"Adding Mac style Plymouth theme ..."$END
+    cp -r fedora-mac-style /usr/share/plymouth/themes || OUT='Failed to add Mac style Plymouth theme to themes folder ...'
+    echo $OUT
 
-printf $CYN"Installing plymouth theme ..."$END
-    plymouth-set-default-theme -R fedora-mac-style || printf $RED"Failed to install plymouth theme ..."$END && sleep 2
-    printf $GRN "Plymouth theme installed ..."$END && sleep 1
+OUT='Mac style Plymouth theme installed successfully ...'
+printf $CYN"Installing Mac style Plymouth theme ..."$END
+    plymouth-set-default-theme -R fedora-mac-style || OUT='Failed to install Mac style Plymouth theme ...'
+    echo $OUT
 
-printf $CYN"Finishing plymouth theme setup ..."$END && sleep 2
-    dracut --regenerate-all -f || printf $RED"Plymouth theme setup failed ..."$END && sleep 1
-    printf $GRN "Plymouth setup complete ..."$END
+OUT='Successfully regenerated initramfs ...'
+printf $CYN"Regenerating initramfs ..."$END && sleep 2
+    dracut --regenerate-all -f || OUT='Failed to regenerate initramfs ...'
+    echo $OUT
 
 printf $CYN"Copying user configuration files ..."$END
 
-printf $CYN"Copying .bashrc config ..."$END
-    sudo -u "$SUDO_USER" cp -r .bashrc "$USER_HOME" || printf $RED"WARNING: FAILED TO COPY BASHRC FILE TO HOME DIRECTORY!"$END
-    printf $GRN".bashrc file replaced in home directory ..."$END
-    printf $CYN"Copying .bashrc.d folder to home directory ..."$END
-    sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME" || printf $RED"Failed to copy .bashrc.d folder to home directory ..."$END
-    printf $GRN".bashrc.d folder copied to home directory ..."$END
+OUT='Successfully copied .bashrc to home directory ...'
+printf $CYN"Copying .bashrc ..."$END
+    sudo -u "$SUDO_USER" cp -r .bashrc "$USER_HOME" || OUT='Failed to copy .bashrc to home directory ...'
+    echo $OUT
 
-printf $CYN"Copying user config folder ..."$END
-    sudo -u "$SUDO_USER" cp -r .config "$USER_HOME" || printf $RED"Failed to copy .config files to ~/.config"$END && sleep 2
-    printf $GRN "User config files added ..."$END && sleep 1
+OUT='Successfully copied .bashrc.d folder to home directory ...'
+printf $CYN"Copying .bashrc.d folder to home directory ..."$END
+    sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME" || OUT='Failed to copy .bashrc.d folder to home directory ...'
+    echo $OUT
 
+OUT='Successfully added user config folder to home directory ...'
+printf $CYN"Adding user config folder to home directory ..."$END
+    sudo -u "$SUDO_USER" cp -r .config "$USER_HOME" || OUT='Failed to copy .config files to ~/.config'
+    echo $OUT
+
+OUT='Desktop folder has been hidden from home directory ...'
 printf $CYN"Hiding Desktop folder ..."$END
-    sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop .Desktop || printf $RED"Failed to hide Desktop folder ..."$END && sleep 2
-    printf $GRN "Desktop folder has been hidden ..."$END && sleep 1
+    sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop "$USER_HOME"/.Desktop || OUT='Failed to hide Desktop folder ...'
+    echo $OUT
 
 printf $CYN"Removing packages from system ..."$END && sleep 1
 
+OUT='All packages removed successfully ...'
 dnf remove -y \
     abrt \
     firefox \
@@ -74,37 +88,42 @@ dnf remove -y \
     rhythmbox \
     snapshot \
     totem \
-    yelp || printf $RED"Failed to resolve transaction ..."$END && sleep 2
+    yelp || OUT='Failed to remove packages from system ...'
     dnf autoremove -y
-    printf $GRN "All unwanted packages removed ..."$END && sleep 1
+    echo $OUT
 
 printf $CYN"Enabling additional repositories ..."$END
 
 printf "Adding copr repositories ..."$END
-    dnf copr enable -y kylegospo/grub-btrfs
-    printf $GRN "grub-btrfs added ..."$END && sleep 1
-    dnf copr enable -y herzen/davinci-helper
-    printf $GRN "davinci-helper added ..."$END && sleep 1
 
+OUT='herzen/davinci-helper copr repository added ...'
+printf "Adding davinci-helper repository ..."$END
+    dnf copr enable -y herzen/davinci-helper
+    echo $OUT
+
+OUT='lukenukem/asus-control copr repository added ...'
+printf "Adding asus-conreol repository ..."$END
+    dnf copr enable -y lukenukem/asus-control
+    echo $OUT
+
+
+OUT='Brave Browser repository added ...'
 printf $CYN"Adding Brave Browser rpm repository ..."$END
     dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-    printf $GRN "Brave repofile imported ..."$END && sleep 1
+    echo $OUT
 
-printf $CYN"Adding Visual Studio Code rpm repository ..."$END
-    rpm --import https://packages.microsoft.com/keys/microsoft.asc
-    echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-    printf $GRN "Visual Studio Code repository added ..."$END && sleep 1
-
+OUT='Terra repository added ...'
 printf $CYN"Adding Terra repository ..."$END
     dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-    printf $GRN "Terra repository installed ..."$END && sleep 1
+    echo $OUT
 
 printf $CYN"Adding RPM Fusion repositories ..."$END
 
+OUT='RPM Fusion repositories added ...'
 dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-    printf $GRN "RPM Fusion repositories installed ..."$END && sleep 1
+    echo $OUT
 
 printf $CYN"Refreshing mirrorlist and performing system update ..."$END
     dnf upgrade --refresh -y
@@ -112,21 +131,27 @@ printf $CYN"Refreshing mirrorlist and performing system update ..."$END
 printf $CYN"Installing system rpm packages ..."$END
 dnf install --allowerasing -y \
     antimicrox \
+    asusctl \
     audacity \
     bat \
     brave-browser \
+    bottles \
     btop \
+    btrfs-assistant \
     cargo \
     cmatrix \
-    code \
+    codium \
     davinci-helper \
     decibels \
     dconf-editor \
     discord \
+    dolphin-emu \
+    dosbox-staging \
     eza \
     fastfetch \
     ffmpeg \
     flatseal \
+    g4music \
     gamescope \
     gimp \
     ghostty \
@@ -136,7 +161,6 @@ dnf install --allowerasing -y \
     gnome-tweaks \
     google-arimo-fonts \
     google-noto-fonts-all \
-    grub-btrfs-timeshift \
     gstreamer1-plugins-bad-freeworld \
     gstreamer-plugins-espeak \
     gstreamer1-plugin-openh264 \
@@ -147,11 +171,13 @@ dnf install --allowerasing -y \
     kde-connect \
     kde-connect-nautilus \
     kdenlive \
+    kid3 \
     kolourpaint \
     kstars \
     kvantum \
     libavcodec-freeworld \
     libcurl-devel \
+    libdnf5-plugin-actions \
     libheif-freeworld \
     libxcrypt-compat \
     lutris \
@@ -175,16 +201,17 @@ dnf install --allowerasing -y \
     radeontop \
     remmina \
     steam \
+    snapper \
     terminus-fonts \
-    timeshift \
     vim \
+    visualboyadvance-m \
     vlc \
     vlc-plugins-freeworld
     printf $GRN "System rpm packages installed ..."$END && sleep 1
 
 printf $CYN"Setting default text editor to Visual Studio Code ..."$END
-    xdg-mime default code.desktop text/plain || printf $RED"Failed to change default text editor to Visual Studio Code ..."$END && sleep 2
-    printf $GRN "Default text editor changed to Visual Studio Code ..."$END && sleep 1
+    xdg-mime default codium.desktop text/plain || printf $RED"Failed to change default text editor to Visual Studio Code ..."$END && sleep 2
+    printf $GRN "Default text editor changed to Visual Studio Code ..."$END
 
 printf $CYN"Switching mesa drivers to freeworld ..."$END
     dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
@@ -205,7 +232,6 @@ printf $CYN"Installing flatpaks from Flathub ..."$END
     sudo -u "$SUDO_USER" flatpak install flathub -y com.jetbrains.Rider
     sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
     sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.usebottles.bottles
     sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
     sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
     sudo -u "$SUDO_USER" flatpak install flathub -y io.github.freedoom.Phase1
@@ -216,6 +242,7 @@ printf $CYN"Installing flatpaks from Flathub ..."$END
     sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
     sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Mail
     sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
+    sudo -u "$SUDO_USER" flatpak install flathub -y org.azahar_emu.Azahar
     sudo -u "$SUDO_USER" flatpak install flathub -y org.openttd.OpenTTD
     sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
     printf $GRN "All flatpaks installed ..."$END && sleep 1
@@ -223,15 +250,17 @@ printf $CYN"Installing flatpaks from Flathub ..."$END
 printf $CYN"Disabling Network Manager wait online service ..."$END
     systemctl disable NetworkManager-wait-online.service || printf $RED"Failed to disable NetworkManager-wait-online.service"$END
     printf $GRN"NetworkManager-wait-online.service disabled ..."$END
+    dracut --regenerate-all -f
 
 printf $CYN"Updating bootloader  ...$END"
     printf $CYN"Updating grub config file ..."$END
     cp -r grub /etc/default || printf $RED"Failed to update grub config file ..."$END && sleep 2
     printf $GRN "Grub config file added ..."$END && sleep 1
     printf $CYN"Adding JetBrains Mono font to grub ..."$END
-    grub2-mkfont -s 25 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf || printf $RED"Failed to make font ..." && sleep 2
+    grub2-mkfont -s 24 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf || printf $RED"Failed to make font ..." && sleep 2
     printf $GRN "JetBrains Mono font added ..."$END
     printf $CYN"Updating grub ..."$END
+    cp -r asus /boot/grub2/themes
     grub2-mkconfig -o /etc/grub2.cfg || printf $RED"Failed to update grub ..."$END && sleep 2
 
 printf $CYN"Setup complete!"$END

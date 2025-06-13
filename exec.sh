@@ -4,7 +4,7 @@
 
 set -e
 
-END='\033[0m\'
+END='\033[0m\n'
 RED='\033[0;31m'
 GRN='\033[0;32m'
 CYN='\033[0;36m'
@@ -44,7 +44,7 @@ printf $CYN"Installing Mac style Plymouth theme ..."$END
     echo $OUT
 
 OUT='Successfully regenerated initramfs ...'
-printf $CYN"Regenerating initramfs ..."$END && sleep 2
+printf $CYN"Regenerating initramfs ..."$END
     dracut --regenerate-all -f || OUT='Failed to regenerate initramfs ...'
     echo $OUT
 
@@ -70,7 +70,7 @@ printf $CYN"Hiding Desktop folder ..."$END
     sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop "$USER_HOME"/.Desktop || OUT='Failed to hide Desktop folder ...'
     echo $OUT
 
-printf $CYN"Removing packages from system ..."$END && sleep 1
+printf $CYN"Removing packages from system ..."$END
 
 OUT='All packages removed successfully ...'
 dnf remove -y \
@@ -101,12 +101,6 @@ printf "Adding davinci-helper repository ..."$END
     dnf copr enable -y herzen/davinci-helper
     echo $OUT
 
-OUT='lukenukem/asus-control copr repository added ...'
-printf "Adding asus-conreol repository ..."$END
-    dnf copr enable -y lukenukem/asus-control
-    echo $OUT
-
-
 OUT='Brave Browser repository added ...'
 printf $CYN"Adding Brave Browser rpm repository ..."$END
     dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -131,7 +125,6 @@ printf $CYN"Refreshing mirrorlist and performing system update ..."$END
 printf $CYN"Installing system rpm packages ..."$END
 dnf install --allowerasing -y \
     antimicrox \
-    asusctl \
     audacity \
     bat \
     brave-browser \
@@ -207,11 +200,10 @@ dnf install --allowerasing -y \
     visualboyadvance-m \
     vlc \
     vlc-plugins-freeworld
-    printf $GRN "System rpm packages installed ..."$END && sleep 1
+    printf $GRN "System rpm packages installed ..."$END
 
-printf $CYN"Setting default text editor to Visual Studio Code ..."$END
+printf $CYN"Setting default text editor to VS Codium ..."$END
     xdg-mime default codium.desktop text/plain || printf $RED"Failed to change default text editor to Visual Studio Code ..."$END && sleep 2
-    printf $GRN "Default text editor changed to Visual Studio Code ..."$END
 
 printf $CYN"Switching mesa drivers to freeworld ..."$END
     dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
@@ -219,8 +211,8 @@ printf $CYN"Switching mesa drivers to freeworld ..."$END
     printf $GRN "Mesa freeworld drivers installed ..."$END
 
 printf $CYN"Removing unused packages ..."$END
-    dnf autoremove -y || printf $RED"Failed to resolve transaction ..."$END && sleep 2
-    printf $GRN "Unused packages successfully removed ..." && sleep 1
+    dnf autoremove -y || printf $RED"Failed to resolve transaction ..."$END
+    printf $GRN "Unused packages successfully removed ..."
 
 printf $CYN"Checking for flatpak updates ..."$END
     sudo -u "$SUDO_USER" flatpak update -y
@@ -261,6 +253,7 @@ printf $CYN"Updating bootloader  ...$END"
     printf $GRN "JetBrains Mono font added ..."$END
     printf $CYN"Updating grub ..."$END
     cp -r asus /boot/grub2/themes
+    cp -r darkmatter /boot/grub2/themes
     grub2-mkconfig -o /etc/grub2.cfg || printf $RED"Failed to update grub ..."$END && sleep 2
 
 printf $CYN"Setup complete!"$END

@@ -84,6 +84,7 @@ dnf remove -y \
     gnome-tour \
     gnome-weather \
     malcontent-control \
+    nano \
     ptyxis \
     rhythmbox \
     snapshot \
@@ -196,7 +197,6 @@ dnf install --allowerasing -y \
     steam \
     snapper \
     terminus-fonts \
-    vim \
     visualboyadvance-m \
     vlc \
     vlc-plugins-freeworld

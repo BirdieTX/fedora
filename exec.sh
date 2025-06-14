@@ -95,13 +95,6 @@ dnf remove -y \
 
 printf $CYN"Enabling additional repositories ..."$END
 
-printf "Adding copr repositories ..."$END
-
-OUT='herzen/davinci-helper copr repository added ...'
-printf "Adding davinci-helper repository ..."$END
-    dnf copr enable -y herzen/davinci-helper
-    echo $OUT
-
 OUT='Brave Browser repository added ...'
 printf $CYN"Adding Brave Browser rpm repository ..."$END
     dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -135,7 +128,6 @@ dnf install --allowerasing -y \
     cargo \
     cmatrix \
     codium \
-    davinci-helper \
     decibels \
     dconf-editor \
     discord \
@@ -252,8 +244,7 @@ printf $CYN"Updating bootloader  ...$END"
     grub2-mkfont -s 24 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf || printf $RED"Failed to make font ..." && sleep 2
     printf $GRN "JetBrains Mono font added ..."$END
     printf $CYN"Updating grub ..."$END
-    cp -r asus /boot/grub2/themes
-    cp -r darkmatter /boot/grub2/themes
+    cp -r themes /boot/grub2
     grub2-mkconfig -o /etc/grub2.cfg || printf $RED"Failed to update grub ..."$END && sleep 2
 
 printf $CYN"Setup complete!"$END

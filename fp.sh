@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 flatpak install flathub -y app.drey.Biblioteca
 flatpak install flathub -y app.drey.EarTag
 flatpak install flathub -y com.adamcake.Bolt

@@ -170,31 +170,6 @@ dnf install --allowerasing -y \
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 dnf autoremove -y
-sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.Biblioteca
-sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.EarTag
-sudo -u "$SUDO_USER" flatpak install flathub -y com.adamcake.Bolt
-sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Decoder
-sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Obfuscate
-sudo -u "$SUDO_USER" flatpak install flathub -y com.feaneron.Boatswain
-sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
-sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
-sudo -u "$SUDO_USER" flatpak install flathub -y com.rafaelmardojai.Blanket
-sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
-sudo -u "$SUDO_USER" flatpak install flathub -y dev.bragefuglseth.Keypunch
-sudo -u "$SUDO_USER" flatpak install flathub -y io.edcd.EDMarketConnector
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.diegoivan.pdf_metadata_editor
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.fizzyizzy05.binary
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.idevecore.Valuta
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
-sudo -u "$SUDO_USER" flatpak install flathub -y io.gitlab.adhami3310.Converter
-sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
-sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
-sudo -u "$SUDO_USER" flatpak install flathub -y org.gnome.gitlab.YaLTeR.VideoTrimmer
-sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
-sudo -u "$SUDO_USER" flatpak install flathub -y ro.go.hmlendea.DL-Desktop
-sudo -u "$SUDO_USER" flatpak install flathub -y se.sjoerd.Graphs
-sudo -u "$SUDO_USER" flatpak install flathub -y sh.ppy.osu
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f
 fastfetch

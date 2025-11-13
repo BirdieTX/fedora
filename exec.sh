@@ -30,9 +30,7 @@ dnf remove -y \
     gnome-shell-extension-window-list \
     gnome-text-editor \
     gnome-tour \
-    gnome-weather \
     malcontent-control \
-    nano \
     rhythmbox \
     totem \
     yelp
@@ -47,8 +45,8 @@ dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/ter
 dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh
-dnf install --allowerasing \
+dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
+dnf install --allowerasing -y \
     @xfce-desktop-environment \
     alacritty \
     antimicrox \
@@ -57,6 +55,7 @@ dnf install --allowerasing \
     bibata-cursor-theme \
     brave-browser \
     bottles \
+    breeze-cursor-theme \
     btop \
     btrfs-assistant \
     bustle \
@@ -72,6 +71,7 @@ dnf install --allowerasing \
     eza \
     fastfetch \
     ffmpeg \
+    fish \
     flatseal \
     fragments \
     freedoom2 \
@@ -146,6 +146,7 @@ dnf install --allowerasing \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
+    plasma-breeze \
     polari \
     protontricks \
     pulseaudio-utils \
@@ -157,17 +158,17 @@ dnf install --allowerasing \
     snapper \
     sysprof \
     terminus-fonts \
+    terminus-fonts-console \
+    vavoom-engine \
     vim-default-editor \
     virt-manager \
     vlc \
     vlc-plugins-freeworld \
     waycheck \
     zen-browser
-dnf swap mesa-va-drivers mesa-va-drivers-freeworld
-dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
+dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
+dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 dnf autoremove -y
-flatpak remote-delete fedora
-flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.Biblioteca
 sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.EarTag
 sudo -u "$SUDO_USER" flatpak install flathub -y com.adamcake.Bolt

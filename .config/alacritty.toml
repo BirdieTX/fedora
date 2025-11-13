@@ -1,0 +1,20 @@
+[font]
+size = 16.0
+
+[font.normal]
+family = "JetBrainsMonoNL Nerd Font"
+
+[font.bold]
+family = "JetBrainsMonoNL Nerd Font"
+
+[font.italic]
+family = "JetBrainsMonoNL Nerd Font"
+
+[font.bold_italic]
+family = "JetBrainsMonoNL Nerd Font"
+
+[terminal]
+shell = "/bin/fish"
+
+[window]
+dimensions = { columns = 80, lines = 20 }

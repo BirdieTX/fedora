@@ -16,137 +16,102 @@ fi
 
 USER_HOME=$(eval printf ~$SUDO_USER)
 
-printf $CYN"Copying system configuration files ..."$END
-
-OUT='DNF Config added successfully ...'
-printf $CYN"Adding DNF config ..."$END
-    cp -r dnf.conf /etc/dnf || OUT="Failed to copy dnf config ..."
-    echo $OUT
-
-OUT='Selinux set to permissive ...'
-printf $CYN"Adding Selinux config ..."$END
-    cp -r config /etc/selinux || OUT='Failed to change Selnux config ...'
-    echo $OUT
-
-OUT='Bibata cursor added successfully ...'
-printf $CYN"Adding Bibata cursor ..."$END
-    cp -r Bibata-Modern-Classic /usr/share/icons || OUT='Failed to add Bibata cursor ...'
-    echo $OUT
-
-OUT='Mac style Plymouth theme added to Plymouth themes folder ...'
-printf $CYN"Adding Mac style Plymouth theme ..."$END
-    cp -r fedora-mac-style /usr/share/plymouth/themes || OUT='Failed to add Mac style Plymouth theme to themes folder ...'
-    echo $OUT
-
-OUT='Mac style Plymouth theme installed successfully ...'
-printf $CYN"Installing Mac style Plymouth theme ..."$END
-    plymouth-set-default-theme -R fedora-mac-style || OUT='Failed to install Mac style Plymouth theme ...'
-    echo $OUT
-
-OUT='Successfully regenerated initramfs ...'
-printf $CYN"Regenerating initramfs ..."$END
-    dracut --regenerate-all -f || OUT='Failed to regenerate initramfs ...'
-    echo $OUT
-
-printf $CYN"Copying user configuration files ..."$END
-
-OUT='Successfully copied .bashrc to home directory ...'
-printf $CYN"Copying .bashrc ..."$END
-    sudo -u "$SUDO_USER" cp -r .bashrc "$USER_HOME" || OUT='Failed to copy .bashrc to home directory ...'
-    echo $OUT
-
-OUT='Successfully copied .bashrc.d folder to home directory ...'
-printf $CYN"Copying .bashrc.d folder to home directory ..."$END
-    sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME" || OUT='Failed to copy .bashrc.d folder to home directory ...'
-    echo $OUT
-
-OUT='Successfully added user config folder to home directory ...'
-printf $CYN"Adding user config folder to home directory ..."$END
-    sudo -u "$SUDO_USER" cp -r .config "$USER_HOME" || OUT='Failed to copy .config files to ~/.config'
-    echo $OUT
-
-OUT='Desktop folder has been hidden from home directory ...'
-printf $CYN"Hiding Desktop folder ..."$END
-    sudo -u "$SUDO_USER" mv "$USER_HOME"/Desktop "$USER_HOME"/.Desktop || OUT='Failed to hide Desktop folder ...'
-    echo $OUT
-
-printf $CYN"Removing packages from system ..."$END
-
-OUT='All packages removed successfully ...'
+cp -r etc /
+cp -r usr /
+plymouth-set-default-theme -R fedora-mac-style
+sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
+sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
 dnf remove -y \
     abrt \
     firefox \
-    gnome-calendar \
-    gnome-connections \
+    gnome-boxes \
     gnome-contacts \
-    gnome-maps \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-common \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
     gnome-text-editor \
     gnome-tour \
     gnome-weather \
     malcontent-control \
     nano \
-    ptyxis \
     rhythmbox \
-    snapshot \
     totem \
-    yelp || OUT='Failed to remove packages from system ...'
+    yelp
     dnf autoremove -y
-    echo $OUT
-
-printf $CYN"Enabling additional repositories ..."$END
-
-OUT='Brave Browser repository added ...'
-printf $CYN"Adding Brave Browser rpm repository ..."$END
-    dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-    echo $OUT
-
-OUT='Terra repository added ...'
-printf $CYN"Adding Terra repository ..."$END
-    dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-    echo $OUT
-
-printf $CYN"Adding RPM Fusion repositories ..."$END
-
-OUT='RPM Fusion repositories added ...'
+dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+rpm --import https://mirror.mwt.me/shiftkey-desktop/gpgkey
+sh -c 'echo -e "[mwt-packages]\nname=GitHub Desktop\nbaseurl=https://mirror.mwt.me/shiftkey-desktop/rpm\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://mirror.mwt.me/shiftkey-desktop/gpgkey" > /etc/yum.repos.d/mwt-packages.repo'
+dnf copr enable -y herzen/davinci-helper
+dnf copr enable -y sneexy/zen-browser
+dnf copr enable -y tofik/nwg-shell
+dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 dnf install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-    echo $OUT
-
-printf $CYN"Refreshing mirrorlist and performing system update ..."$END
-    dnf upgrade --refresh -y
-
-printf $CYN"Installing system rpm packages ..."$END
-dnf install --allowerasing -y \
+dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh
+dnf install --allowerasing \
+    alacritty \
     antimicrox \
     audacity \
     bat \
+    bibata-cursor-theme \
     brave-browser \
     bottles \
     btop \
     btrfs-assistant \
+    bustle \
     cargo \
     cmatrix \
-    codium \
+    d-spy \
+    davinci-helper \
     decibels \
     dconf-editor \
     discord \
-    dolphin-emu \
-    dosbox-staging \
+    doom-shareware \
+    doom2-masterlevels \
     eza \
     fastfetch \
     ffmpeg \
     flatseal \
+    fragments \
+    freedoom2 \
     g4music \
     gamescope \
     gimp \
-    ghostty \
+    gnome-chess \
     gnome-extensions-app \
+    gnome-firmware \
+    gnome-mahjongg \
+    gnome-manuals \
+    gnome-mines \
+    gnome-nibbles \
+    gnome-shell-extension-appindicator \
+    gnome-shell-extension-blur-my-shell \
+    gnome-shell-extension-gamemode \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
+    gnome-sudoku \
+    gnome-taquin \
     gnome-tweaks \
+    google-android-emoji-fonts \
     google-arimo-fonts \
+    google-carlito-fonts \
+    google-crosextra-caladea-fonts \
+    google-droid-fonts-all \
+    google-go-fonts \
     google-noto-fonts-all \
+    google-noto-sans-cjk-fonts \
+    google-noto-sans-cjk-vf-fonts \
+    google-noto-serif-cjk-vf-fonts \
+    google-noto-sans-hk-fonts \
+    google-noto-serif-cjk-fonts \
+    google-roboto-fonts \
+    google-roboto-mono-fonts \
+    google-roboto-slab-fonts \
+    google-rubik-fonts \
     gstreamer1-plugins-bad-freeworld \
     gstreamer-plugins-espeak \
     gstreamer1-plugin-openh264 \
@@ -154,17 +119,18 @@ dnf install --allowerasing -y \
     htop \
     inotify-tools \
     jetbrains-mono-fonts-all \
-    kde-connect \
-    kde-connect-nautilus \
+    jetbrainsmono-nerd-fonts \
     kdenlive \
-    kid3 \
     kolourpaint \
-    kstars \
-    kvantum \
+    kpat \
+    krita \
     libavcodec-freeworld \
     libcurl-devel \
     libdnf5-plugin-actions \
     libheif-freeworld \
+    libreoffice-base \
+    libreoffice-draw \
+    libreoffice-math \
     libxcrypt-compat \
     lutris \
     memtest86+ \
@@ -172,80 +138,63 @@ dnf install --allowerasing -y \
     mesa-va-drivers-freeworld \
     mesa-vdpau-drivers-freeworld \
     mc \
+    minecraft-launcher \
+    mission-center \
     mozilla-openh264 \
     nautilus-gsconnect \
-    neovim \
     obs-studio \
+    openrgb \
+    openttd \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
+    polari \
     protontricks \
     pulseaudio-utils \
-    qalculate-gtk \
-    qbittorrent \
+    qt5ct \
     qt6ct \
     radeontop \
     remmina \
     steam \
     snapper \
+    sysprof \
     terminus-fonts \
-    visualboyadvance-m \
+    vim-default-editor \
+    virt-manager \
     vlc \
-    vlc-plugins-freeworld
-    printf $GRN "System rpm packages installed ..."$END
-
-printf $CYN"Setting default text editor to VS Codium ..."$END
-    xdg-mime default codium.desktop text/plain || printf $RED"Failed to change default text editor to Visual Studio Code ..."$END && sleep 2
-
-printf $CYN"Switching mesa drivers to freeworld ..."$END
-    dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
-    dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y || printf $RED"POSSIBLY REDUNDANT COMMAND; IGNORE IF FAILED ..."$END && sleep 5
-    printf $GRN "Mesa freeworld drivers installed ..."$END
-
-printf $CYN"Removing unused packages ..."$END
-    dnf autoremove -y || printf $RED"Failed to resolve transaction ..."$END
-    printf $GRN "Unused packages successfully removed ..."
-
-printf $CYN"Checking for flatpak updates ..."$END
-    sudo -u "$SUDO_USER" flatpak update -y
-    printf $GRN "Flatpaks are up to date ..."$END
-
-printf $CYN"Installing flatpaks from Flathub ..."$END
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.bitwarden.desktop
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.geeks3d.furmark
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.jetbrains.Rider
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
-    sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.freedoom.Phase1
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.endless_sky.endless_sky
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.github.shiftey.Desktop
-    sudo -u "$SUDO_USER" flatpak install flathub -y io.missioncenter.MissionCenter
-    sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
-    sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Mail
-    sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
-    sudo -u "$SUDO_USER" flatpak install flathub -y org.azahar_emu.Azahar
-    sudo -u "$SUDO_USER" flatpak install flathub -y org.openttd.OpenTTD
-    sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
-    printf $GRN "All flatpaks installed ..."$END && sleep 1
-
-printf $CYN"Disabling Network Manager wait online service ..."$END
-    systemctl disable NetworkManager-wait-online.service || printf $RED"Failed to disable NetworkManager-wait-online.service"$END
-    printf $GRN"NetworkManager-wait-online.service disabled ..."$END
-    dracut --regenerate-all -f
-
-printf $CYN"Updating bootloader  ...$END"
-    printf $CYN"Updating grub config file ..."$END
-    cp -r grub /etc/default || printf $RED"Failed to update grub config file ..."$END && sleep 2
-    printf $GRN "Grub config file added ..."$END && sleep 1
-    printf $CYN"Adding JetBrains Mono font to grub ..."$END
-    grub2-mkfont -s 24 -o /boot/grub2/fonts/JetBrainsBold.pf2 /usr/share/fonts/jetbrains-mono-nl-fonts/JetBrainsMonoNL-Bold.ttf || printf $RED"Failed to make font ..." && sleep 2
-    printf $GRN "JetBrains Mono font added ..."$END
-    printf $CYN"Updating grub ..."$END
-    cp -r themes /boot/grub2
-    grub2-mkconfig -o /etc/grub2.cfg || printf $RED"Failed to update grub ..."$END && sleep 2
-
-printf $CYN"Setup complete!"$END
-fastfetch -c examples/10
+    vlc-plugins-freeworld \
+    waycheck \
+    zen-browser
+dnf swap mesa-va-drivers mesa-va-drivers-freeworld
+dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
+dnf autoremove -y
+flatpak remote-delete fedora
+flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.Biblioteca
+sudo -u "$SUDO_USER" flatpak install flathub -y app.drey.EarTag
+sudo -u "$SUDO_USER" flatpak install flathub -y com.adamcake.Bolt
+sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Decoder
+sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Obfuscate
+sudo -u "$SUDO_USER" flatpak install flathub -y com.feaneron.Boatswain
+sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
+sudo -u "$SUDO_USER" flatpak install flathub -y com.protonvpn.www
+sudo -u "$SUDO_USER" flatpak install flathub -y com.rafaelmardojai.Blanket
+sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
+sudo -u "$SUDO_USER" flatpak install flathub -y dev.bragefuglseth.Keypunch
+sudo -u "$SUDO_USER" flatpak install flathub -y io.edcd.EDMarketConnector
+sudo -u "$SUDO_USER" flatpak install flathub -y io.github.aandrew_me.ytdn
+sudo -u "$SUDO_USER" flatpak install flathub -y io.github.diegoivan.pdf_metadata_editor
+sudo -u "$SUDO_USER" flatpak install flathub -y io.github.fizzyizzy05.binary
+sudo -u "$SUDO_USER" flatpak install flathub -y io.github.idevecore.Valuta
+sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
+sudo -u "$SUDO_USER" flatpak install flathub -y io.gitlab.adhami3310.Converter
+sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
+sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
+sudo -u "$SUDO_USER" flatpak install flathub -y org.gnome.gitlab.YaLTeR.VideoTrimmer
+sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
+sudo -u "$SUDO_USER" flatpak install flathub -y ro.go.hmlendea.DL-Desktop
+sudo -u "$SUDO_USER" flatpak install flathub -y se.sjoerd.Graphs
+sudo -u "$SUDO_USER" flatpak install flathub -y sh.ppy.osu
+systemctl disable NetworkManager-wait-online.service
+dracut --regenerate-all -f
+fastfetch

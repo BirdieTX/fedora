@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# This is script is currently broken, don't use  it
-
 set -e
 
 END='\033[0m\n'
@@ -22,10 +20,8 @@ plymouth-set-default-theme -R fedora-mac-style
 sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
 dnf remove -y \
-    abrt \
     firefox \
     gnome-boxes \
-    gnome-contacts \
     gnome-shell-extension-apps-menu \
     gnome-shell-extension-background-logo \
     gnome-shell-extension-common \
@@ -53,6 +49,7 @@ dnf install -y \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh
 dnf install --allowerasing \
+    @xfce-desktop-environment \
     alacritty \
     antimicrox \
     audacity \
@@ -142,6 +139,7 @@ dnf install --allowerasing \
     mission-center \
     mozilla-openh264 \
     nautilus-gsconnect \
+    nwg-look \
     obs-studio \
     openrgb \
     openttd \

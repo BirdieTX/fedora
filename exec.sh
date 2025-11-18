@@ -22,7 +22,6 @@ sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 dnf remove -y \
     firefox \
-    gnome-boxes \
     gnome-shell-extension-apps-menu \
     gnome-shell-extension-background-logo \
     gnome-shell-extension-common \
@@ -39,7 +38,6 @@ dnf remove -y \
 dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 rpm --import https://mirror.mwt.me/shiftkey-desktop/gpgkey
 sh -c 'echo -e "[mwt-packages]\nname=GitHub Desktop\nbaseurl=https://mirror.mwt.me/shiftkey-desktop/rpm\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://mirror.mwt.me/shiftkey-desktop/gpgkey" > /etc/yum.repos.d/mwt-packages.repo'
-dnf copr enable -y herzen/davinci-helper
 dnf copr enable -y sneexy/zen-browser
 dnf copr enable -y tofik/nwg-shell
 dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
@@ -48,7 +46,6 @@ dnf install -y \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf install --allowerasing -y \
-    @xfce-desktop-environment \
     alacritty \
     antimicrox \
     audacity \
@@ -63,7 +60,6 @@ dnf install --allowerasing -y \
     cargo \
     cmatrix \
     d-spy \
-    davinci-helper \
     decibels \
     dconf-editor \
     discord \
@@ -79,11 +75,11 @@ dnf install --allowerasing -y \
     g4music \
     gamescope \
     gimp \
+    github-desktop \
     gnome-chess \
     gnome-extensions-app \
     gnome-firmware \
     gnome-mahjongg \
-    gnome-manuals \
     gnome-mines \
     gnome-nibbles \
     gnome-shell-extension-appindicator \
@@ -140,6 +136,7 @@ dnf install --allowerasing -y \
     mission-center \
     mozilla-openh264 \
     nautilus-gsconnect \
+    nautilus-open-any-terminal \
     nwg-look \
     obs-studio \
     openrgb \
@@ -157,6 +154,7 @@ dnf install --allowerasing -y \
     remmina \
     steam \
     snapper \
+    swell-foop \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
@@ -169,6 +167,8 @@ dnf install --allowerasing -y \
     zen-browser
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
+dnf remove -y \
+    gnome-boxes
 dnf autoremove -y
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f

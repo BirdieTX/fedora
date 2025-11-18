@@ -1,5 +1,5 @@
 [font]
-size = 16.0
+size = 12.0
 
 [font.normal]
 family = "JetBrainsMonoNL Nerd Font"
@@ -17,4 +17,4 @@ family = "JetBrainsMonoNL Nerd Font"
 shell = "/bin/fish"
 
 [window]
-dimensions = { columns = 80, lines = 20 }
+dimensions = { columns = 100, lines = 25 }

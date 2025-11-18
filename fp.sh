@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-flatpak install flathub -y app.drey.Biblioteca
 flatpak install flathub -y app.drey.EarTag
 flatpak install flathub -y com.adamcake.Bolt
 flatpak install flathub -y com.belmoussaoui.Decoder
@@ -9,10 +8,10 @@ flatpak install flathub -y com.feaneron.Boatswain
 flatpak install flathub -y com.pokemmo.PokeMMO
 flatpak install flathub -y com.protonvpn.www
 flatpak install flathub -y com.rafaelmardojai.Blanket
+flatpak install flathub -y com.vixalien.sticky
 flatpak install flathub -y com.vysp3r.ProtonPlus
 flatpak install flathub -y dev.bragefuglseth.Keypunch
 flatpak install flathub -y io.edcd.EDMarketConnector
-flatpak install flathub -y io.github.aandrew_me.ytdn
 flatpak install flathub -y io.github.diegoivan.pdf_metadata_editor
 flatpak install flathub -y io.github.fizzyizzy05.binary
 flatpak install flathub -y io.github.idevecore.Valuta

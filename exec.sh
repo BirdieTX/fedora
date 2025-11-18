@@ -19,6 +19,7 @@ cp -r usr /
 plymouth-set-default-theme -R fedora-mac-style
 sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
+sudo -u "$SUDO_USER" cp -r .scripts "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 dnf remove -y \
     firefox \

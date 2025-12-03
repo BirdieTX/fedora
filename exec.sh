@@ -23,10 +23,12 @@ sudo -u "$SUDO_USER" cp -r .scripts "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 
 dnf5 config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-rpm --import https://mirror.mwt.me/shiftkey-desktop/gpgkey
+rpm --import -y https://mirror.mwt.me/shiftkey-desktop/gpgkey
 sh -c 'echo -e "[mwt-packages]\nname=GitHub Desktop\nbaseurl=https://mirror.mwt.me/shiftkey-desktop/rpm\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://mirror.mwt.me/shiftkey-desktop/gpgkey" > /etc/yum.repos.d/mwt-packages.repo'
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
 wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d' ' -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.3-1.noarch.rpm"
-dnf5 install ./protonvpn-stable-release-1.0.3-1.noarch.rpm && sudo dnf5 check-update --refresh
+dnf5 install -y ./protonvpn-stable-release-1.0.3-1.noarch.rpm
 dnf5 copr enable -y architektapx/protonmail-desktop
 dnf5 copr enable -y tofik/nwg-shell
 dnf5 copr enable -y wehagy/protonplus
@@ -48,12 +50,12 @@ dnf5 install --allowerasing -y \
     bustle \
     cargo \
     cmatrix \
+    code \
     d-spy \
     decibels \
     dconf-editor \
     discord \
-    doom-shareware \
-    doom2-masterlevels \
+    dolphin-emu \
     elisa-player \
     eza \
     fastfetch \
@@ -74,7 +76,6 @@ dnf5 install --allowerasing -y \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
     gnome-sudoku \
-    gnome-taquin \
     gnome-tweaks \
     google-android-emoji-fonts \
     google-arimo-fonts \
@@ -101,9 +102,12 @@ dnf5 install --allowerasing -y \
     jetbrains-mono-fonts-all \
     jetbrainsmono-nerd-fonts \
     kdenlive \
+    kid3 \
     kolourpaint \
+    kmousetool \
     kpat \
     krita \
+    kvantum \
     libavcodec-freeworld \
     libcurl-devel \
     libdnf5-plugin-actions \
@@ -113,6 +117,7 @@ dnf5 install --allowerasing -y \
     libreoffice-math \
     libxcrypt-compat \
     lutris \
+    mame \
     memtest86+ \
     mercurial \
     mesa-va-drivers-freeworld \
@@ -128,6 +133,7 @@ dnf5 install --allowerasing -y \
     obs-studio \
     openrgb \
     openttd \
+    openvpn \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
@@ -142,23 +148,24 @@ dnf5 install --allowerasing -y \
     qt6ct \
     radeontop \
     remmina \
+    scummvm \
     steam \
     snapper \
-    swell-foop \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
-    vavoom-engine \
     vim-default-editor \
     virt-manager \
     vlc \
     vlc-plugins-freeworld \
-    waycheck
+    waycheck \
+    zed
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf5 swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 dnf5 remove -y \
     firefox \
     gnome-boxes \
+    gnome-connections \
     gnome-shell-extension-apps-menu \
     gnome-shell-extension-background-logo \
     gnome-shell-extension-common \
@@ -170,7 +177,6 @@ dnf5 remove -y \
     malcontent-control \
     rhythmbox \
     showtime \
-    totem \
     yelp
 dnf5 autoremove -y
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y

@@ -79,14 +79,10 @@ dnf5 install --allowerasing -y \
     gnome-tweaks \
     google-android-emoji-fonts \
     google-arimo-fonts \
-    google-carlito-fonts \
-    google-crosextra-caladea-fonts \
     google-droid-fonts-all \
     google-go-fonts \
     google-noto-fonts-all \
     google-noto-sans-cjk-fonts \
-    google-noto-sans-cjk-vf-fonts \
-    google-noto-serif-cjk-vf-fonts \
     google-noto-sans-hk-fonts \
     google-noto-serif-cjk-fonts \
     google-roboto-fonts \
@@ -95,7 +91,6 @@ dnf5 install --allowerasing -y \
     google-rubik-fonts \
     gstreamer1-plugins-bad-freeworld \
     gstreamer-plugins-espeak \
-    gstreamer1-plugin-openh264 \
     hardinfo2 \
     htop \
     inotify-tools \
@@ -133,7 +128,6 @@ dnf5 install --allowerasing -y \
     obs-studio \
     openrgb \
     openttd \
-    openvpn \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
@@ -158,8 +152,6 @@ dnf5 install --allowerasing -y \
     vlc \
     vlc-plugins-freeworld \
     waycheck \
-    xfce4 \
-    xfce4-goodies \
     zed
 dnf5 group install -y xfce-desktop
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y

@@ -161,8 +161,12 @@ dnf5 install --allowerasing -y \
     xfce4 \
     xfce4-goodies \
     zed
+dnf5 group install -y xfce-desktop
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
+dnf5 swap mesa-vulkan-drivers mesa-vulkan-drivers-freeworld -y
 dnf5 remove -y \
+    blueman \
+    dnfdragora \
     firefox \
     gnome-boxes \
     gnome-connections \

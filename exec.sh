@@ -158,6 +158,8 @@ dnf5 install --allowerasing -y \
     vlc \
     vlc-plugins-freeworld \
     waycheck \
+    xfce4 \
+    xfce4-goodies \
     zed
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf5 remove -y \

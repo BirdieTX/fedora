@@ -53,7 +53,6 @@ dnf5 install --allowerasing -y \
     cmatrix \
     code \
     d-spy \
-    decibels \
     desktop-backgrounds-compat \
     dconf-editor \
     dhcp-client \
@@ -183,6 +182,9 @@ dnf5 install --allowerasing -y \
     vlc \
     vlc-plugins-freeworld \
     waycheck \
+    wine \
+    wine-alsa \
+    wine-pulseaudio \
     xfce4-about \
     xfce4-appfinder \
     xfce4-datetime-plugin \

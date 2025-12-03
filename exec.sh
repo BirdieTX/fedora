@@ -142,7 +142,6 @@ dnf5 install --allowerasing -y \
     protonmail-desktop \
     protonplus \
     protontricks \
-    pulseaudio-utils \
     qbittorrent \
     qt5ct \
     qt6ct \
@@ -161,7 +160,6 @@ dnf5 install --allowerasing -y \
     waycheck \
     zed
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
-dnf5 swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 dnf5 remove -y \
     firefox \
     gnome-boxes \
@@ -175,10 +173,11 @@ dnf5 remove -y \
     gnome-text-editor \
     gnome-tour \
     malcontent-control \
-    rhythmbox \
     showtime \
     yelp
 dnf5 autoremove -y
+dnf5 install -y \
+    pulseaudio-utils
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f

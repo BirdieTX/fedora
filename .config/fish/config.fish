@@ -22,7 +22,7 @@ if status is-interactive
 		alias dnfse='dnf5 list | grep'
 		alias dnfsei='dnf5 list --installed | grep'
 		alias dnfup='sudo dnf5 upgrade --allowerasing --allow-downgrade'
-		alias ff='fastfetch -c examples/10'
+		alias ff='fastfetch'
 		alias fft='fastfetch -c $HOME/.config/fastfetch/term.jsonc'
 		alias fparm='flatpak uninstall --unused'
 		alias fpin='flatpak install'

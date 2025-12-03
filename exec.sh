@@ -21,35 +21,23 @@ sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .scripts "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
-dnf remove -y \
-    firefox \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-common \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-text-editor \
-    gnome-tour \
-    malcontent-control \
-    rhythmbox \
-    totem \
-    yelp
-    dnf autoremove -y
-dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+
+dnf5 config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 rpm --import https://mirror.mwt.me/shiftkey-desktop/gpgkey
 sh -c 'echo -e "[mwt-packages]\nname=GitHub Desktop\nbaseurl=https://mirror.mwt.me/shiftkey-desktop/rpm\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://mirror.mwt.me/shiftkey-desktop/gpgkey" > /etc/yum.repos.d/mwt-packages.repo'
-dnf copr enable -y sneexy/zen-browser
-dnf copr enable -y tofik/nwg-shell
-dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-dnf install -y \
+wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d' ' -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.3-1.noarch.rpm"
+dnf5 install ./protonvpn-stable-release-1.0.3-1.noarch.rpm && sudo dnf5 check-update --refresh
+dnf5 copr enable -y architektapx/protonmail-desktop
+dnf5 copr enable -y tofik/nwg-shell
+dnf5 copr enable -y wehagy/protonplus
+dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+dnf5 install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-dnf upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
-dnf install --allowerasing -y \
+dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
-    audacity \
+    audacity-freeworld \
     bat \
     bibata-cursor-theme \
     brave-browser \
@@ -66,14 +54,13 @@ dnf install --allowerasing -y \
     discord \
     doom-shareware \
     doom2-masterlevels \
+    elisa-player \
     eza \
     fastfetch \
     ffmpeg \
     fish \
     flatseal \
-    fragments \
     freedoom2 \
-    g4music \
     gamescope \
     gimp \
     github-desktop \
@@ -84,8 +71,6 @@ dnf install --allowerasing -y \
     gnome-mines \
     gnome-nibbles \
     gnome-shell-extension-appindicator \
-    gnome-shell-extension-blur-my-shell \
-    gnome-shell-extension-gamemode \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
     gnome-sudoku \
@@ -132,6 +117,7 @@ dnf install --allowerasing -y \
     mercurial \
     mesa-va-drivers-freeworld \
     mesa-vdpau-drivers-freeworld \
+    mesa-vulkan-drivers-freeworld \
     mc \
     minecraft-launcher \
     mission-center \
@@ -145,10 +131,13 @@ dnf install --allowerasing -y \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
-    plasma-breeze \
     polari \
+    proton-vpn-gnome-desktop \
+    protonmail-desktop \
+    protonplus \
     protontricks \
     pulseaudio-utils \
+    qbittorrent \
     qt5ct \
     qt6ct \
     radeontop \
@@ -164,13 +153,27 @@ dnf install --allowerasing -y \
     virt-manager \
     vlc \
     vlc-plugins-freeworld \
-    waycheck \
-    zen-browser
-dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
-dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
-dnf remove -y \
-    gnome-boxes
-dnf autoremove -y
+    waycheck
+dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
+dnf5 swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
+dnf5 remove -y \
+    firefox \
+    gnome-boxes \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-common \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
+    gnome-text-editor \
+    gnome-tour \
+    malcontent-control \
+    rhythmbox \
+    showtime \
+    totem \
+    yelp
+dnf5 autoremove -y
+dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f
 fastfetch

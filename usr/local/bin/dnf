@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+
+# autoremove offline
+if [[ "$1" == "arm" && "$2" == "-o" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 autoremove --offline "$@"
+fi
+
+# autoremove
+if [[ "$1" == "arm" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 autoremove "$@"
+fi
+
+# check upgrade
+if [[ "$1" == "cu" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 check-upgrade "$@"
+fi
+
+# offline downgrade
+if [[ "$1" == "dg" && "$2" == "-o" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 downgrade --offline "$@"
+fi
+
+# downgrade
+if [[ "$1" == "dg" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 downgrade "$@"
+fi
+
+# download
+if [[ "$1" == "dl" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 download "$@"
+fi
+
+# install offline
+if [[ "$1" == "in" && "$2" == "-o" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 install --offline "$@"
+fi
+
+# list all installed packages
+if [[ "$1" == "ls" && "$2" == "-i" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 list --installed "$@"
+fi
+
+# list all packages
+if [[ "$1" == "ls" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 list "$@"
+fi
+
+# reboot and perform offline transaction
+if [[ "$1" == "orb" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 offline reboot "$@"
+fi
+
+# perform offline transaction and shutdown
+if [[ "$1" == "osd" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 offline reboot --poweroff "$@"
+fi
+
+# check upgrade and refresh repositories
+if [[ "$1" == "ref" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 check-upgrade --refresh "$@"
+fi
+
+# remove and store the transaction for reboot
+if [[ "$1" == "rm" && "$2" == "-o" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 remove --offline "$@"
+fi
+
+# search for installed package
+if [[ "$1" == "se" && "$2" == "-i" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 list --installed | grep "$@"
+fi
+
+# search for package
+if [[ "$1" == "se" ]]; then
+    shift 1
+    exec /usr/bin/dnf5 list | grep "$@"
+fi
+
+# offline upgrade with only bugfixes
+if [[ "$1" == "up" && "$2" == "-bo" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --bugfix --offline "$@"
+fi
+
+# upgrade with only bugixes
+if [[ "$1" == "up" && "$2" == "-b" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --bugfix "$@"
+fi
+
+# offline minimal upgrade
+if [[ "$1" == "up" && "$2" == "-mo" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --minimal --offline "$@"
+fi
+
+# minimal upgrade
+if [[ "$1" == "up" && "$2" == "-m" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --minimal "$@"
+fi
+
+# upgrade with only patches
+if [[ "$1" == "up" && "$2" == "-p" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --bugfix --security "$@"
+fi
+
+# offline upgrade with only patches
+if [[ "$1" == "up" && "$2" == "-op" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --bugfix --offline --security "$@"
+fi
+
+# offline upgrade with only security fixes
+if [[ "$1" == "up" && "$2" == "-os" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --offline --security "$@"
+fi
+
+# offline upgrade
+if [[ "$1" == "up" && "$2" == "-o" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --offline "$@"
+fi
+
+# upgrade with only security fixes
+if [[ "$1" == "up" && "$2" == "-s" ]]; then
+    shift 2
+    exec /usr/bin/dnf5 upgrade --security "$@"
+fi
+
+exec /usr/bin/dnf5 "$@"

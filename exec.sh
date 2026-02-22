@@ -41,6 +41,7 @@ dnf5 install --allowerasing -y \
     antimicrox \
     audacity-freeworld \
     bat \
+    baobab \
     bibata-cursor-theme \
     brave-browser \
     bottles \
@@ -50,31 +51,48 @@ dnf5 install --allowerasing -y \
     cargo \
     cmatrix \
     code \
+    cosmic-session \
     d-spy \
     dconf-editor \
+    decibels \
     default-fonts \
     elisa-player \
+    evince \
     eza \
     fastfetch \
     ffmpeg \
     fish \
+    flatpak \
     flatseal \
     freedoom \
     freedoom2 \
     gamescope \
     gimp \
     github-desktop \
+    gnome-abrt \
+    gnome-calculator \
+    gnome-calendar \
+    gnome-characters \
     gnome-chess \
+    gnome-clocks \
+    gnome-contacts \
     gnome-extensions-app \
     gnome-firmware \
+    gnome-font-viewer \
+    gnome-logs \
     gnome-mahjongg \
+    gnome-maps \
     gnome-mines \
     gnome-nibbles \
+    gnome-session \
     gnome-shell-extension-appindicator \
+    gnome-shell-extension-blur-my-shell \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
+    gnome-software \
     gnome-sudoku \
     gnome-tweaks \
+    gnome-weather \
     google-android-emoji-fonts \
     google-arimo-fonts \
     google-droid-fonts-all \
@@ -87,6 +105,7 @@ dnf5 install --allowerasing -y \
     google-roboto-mono-fonts \
     google-roboto-slab-fonts \
     google-rubik-fonts \
+    google-tinos-fonts \
     gstreamer-plugins-espeak \
     gstreamer1-plugins-bad-freeworld \
     gstreamer1-plugins-ugly \
@@ -100,8 +119,10 @@ dnf5 install --allowerasing -y \
     kolourpaint \
     kmousetool \
     kpat \
+    krename \
     krita \
     kvantum \
+    libaacs \
     libavcodec-freeworld \
     libbdplus \
     libcurl-devel \
@@ -112,17 +133,25 @@ dnf5 install --allowerasing -y \
     libmimic \
     libndi \
     libreoffice-base \
+    libreoffice-calc \
     libreoffice-draw \
+    libreoffice-impress \
     libreoffice-math \
+    libreoffice-writer \
     libxcrypt-compat \
+    loupe \
     lutris \
+    material-icons-fonts \
+    mediawriter \
     memtest86+ \
     mesa-va-drivers-freeworld \
     mesa-vdpau-drivers-freeworld \
-    mesa-vulkan-drivers-freeworld \
+    mesa-vulkan-drivers-freeworld.i686 \
+    mesa-vulkan-drivers-freeworld.x86_64 \
     minecraft-launcher \
     mission-center \
     mozilla-openh264 \
+    nautilus \
     nautilus-gsconnect \
     nwg-look \
     obs-studio \
@@ -135,6 +164,7 @@ dnf5 install --allowerasing -y \
     polari \
     proton-vpn-gnome-desktop \
     protontricks \
+    ptyxis \
     pulseaudio-utils \
     qbittorrent \
     qt5ct \
@@ -148,11 +178,12 @@ dnf5 install --allowerasing -y \
     rsms-inter-fonts \
     rsms-inter-vf-fonts \
     setroubleshoot \
+    simple-scan \
     steam \
     snapper \
+    snapshot \
     sysprof \
     terminus-fonts \
-    terminus-fonts-console \
     vesktop \
     vim-default-editor \
     virt-manager \
@@ -167,23 +198,11 @@ dnf5 install --allowerasing -y \
     x264 \
     x265 \
     yazi \
+    yelp \
     zed \
     zen-browser
 dnf5 swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf5 swap mesa-vulkan-drivers mesa-vulkan-drivers-freeworld -y
-dnf5 remove -y \
-    gnome-boxes \
-    gnome-connections \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-common \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-text-editor \
-    gnome-tour \
-    malcontent-control \
-    showtime
 dnf5 autoremove -y
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service

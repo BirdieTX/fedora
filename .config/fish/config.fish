@@ -13,7 +13,6 @@ if status is-interactive
 		alias neofetch='fastfetch -c neofetch'
 		alias nf='fastfetch -c neofetch'
 		alias patch='$HOME/.scripts/patch.sh'
-		alias update-grub='sudo grub2-mkconfig -o /boot/grub2/grub.cfg'
 
 	# Run fastfetch configuration on shell startup (expect tty)
 	fastfetch -c ~/.config/fastfetch/term.jsonc

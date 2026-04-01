@@ -11,13 +11,13 @@
   },
   "modules": [
     {
-      "key": "Distro     ==>",
+      "key": "Distro     ==>",
       "type": "os",
       "format": "{2}",
       "keyColor": "cyan",
     },
     {
-      "key": "Kernel     ==>",
+      "key": "Kernel     ==>",
       "type": "kernel",
       "format": "{2}",
       "keyColor": "cyan",

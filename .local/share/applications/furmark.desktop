@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=FurMark
+Exec=/home/birdie/.local/bin/FurMark/FurMark_GUI
+Icon=furmark
+Terminal=false
+Type=Application

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Prime95
+Type=Application
+Icon=prime95
+Terminal=true
+Exec=/home/birdie/.local/bin/Prime95/mprime

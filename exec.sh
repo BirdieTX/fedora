@@ -29,13 +29,12 @@ sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 
 dnf5 install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
-    "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" \
+    "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
     audacity-freeworld \
     bat \
-    bibata-cursor-theme \
     bottles \
     btop \
     btrfs-assistant \
@@ -137,7 +136,6 @@ dnf5 install --allowerasing -y \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
-    vesktop \
     vim-default-editor \
     virt-manager \
     vlc \
@@ -162,6 +160,7 @@ dnf5 remove -y \
     malcontent-control \
     showtime
 dnf5 autoremove -y
+dnf5 swap -y mesa-va-drivers mesa-va-drivers-freeworld
 dnf5 install -y nano
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 bash -c "cat > /etc/dnf/libdnf5-plugins/actions.d/snapper.actions" <<'EOF'
@@ -194,32 +193,4 @@ systemctl enable snapper-timeline.timer
 systemctl enable snapper-cleanup.timer
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f -v
-sudo -u "$SUDO_USER" flatpak install flathub -y com.adamcake.Bolt
-sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Decoder
-sudo -u "$SUDO_USER" flatpak install flathub -y com.belmoussaoui.Obfuscate
-sudo -u "$SUDO_USER" flatpak install flathub -y com.brave.Browser
-sudo -u "$SUDO_USER" flatpak install flathub -y com.discordapp.Discord
-sudo -u "$SUDO_USER" flatpak install flathub -y com.markopejic.downloader
-sudo -u "$SUDO_USER" flatpak install flathub -y com.pokemmo.PokeMMO
-sudo -u "$SUDO_USER" flatpak install flathub -y com.rafaelmardojai.Blanket
-sudo -u "$SUDO_USER" flatpak install flathub -y com.vixalien.sticky
-sudo -u "$SUDO_USER" flatpak install flathub -y com.vysp3r.ProtonPlus
-sudo -u "$SUDO_USER" flatpak install flathub -y dev.bragefuglseth.Keypunch
-sudo -u "$SUDO_USER" flatpak install flathub -y dev.zed.Zed
-sudo -u "$SUDO_USER" flatpak install flathub -y io.edcd.EDMarketConnector
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.diegoivan.pdf_metadata_editor
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.fizzyizzy05.binary
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.idevecore.Valuta
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.plrigaux.sysd-manager
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.pol_rivero.github-desktop-plus
-sudo -u "$SUDO_USER" flatpak install flathub -y io.github.realmazharhussain.GdmSettings
-sudo -u "$SUDO_USER" flatpak install flathub -y io.gitlab.adhami3310.Converter
-sudo -u "$SUDO_USER" flatpak install flathub -y md.obsidian.Obsidian
-sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Mail
-sudo -u "$SUDO_USER" flatpak install flathub -y me.proton.Pass
-sudo -u "$SUDO_USER" flatpak install flathub -y net.runelite.RuneLite
-sudo -u "$SUDO_USER" flatpak install flathub -y org.gnome.gitlab.YaLTeR.VideoTrimmer
-sudo -u "$SUDO_USER" flatpak install flathub -y org.signal.Signal
-sudo -u "$SUDO_USER" flatpak install flathub -y ro.go.hmlendea.DL-Desktop
-sudo -u "$SUDO_USER" flatpak install flathub -y sh.ppy.osu
 fastfetch

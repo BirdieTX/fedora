@@ -27,6 +27,21 @@ sudo -u "$SUDO_USER" cp -r .local "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .scripts "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 
+dnf5 remove -y \
+    gnome-boxes \
+    gnome-connections \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-common \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
+    gnome-text-editor \
+    gnome-tour \
+    malcontent-control \
+    nano-default-editor \
+    showtime
+dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf5 install -y \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
@@ -109,6 +124,7 @@ dnf5 install --allowerasing -y \
     mesa-vulkan-drivers-freeworld.x86_64 \
     mesa-vulkan-drivers-freeworld.i686 \
     mozilla-openh264 \
+    nano \
     nautilus-gsconnect \
     obs-studio \
     openrgb \
@@ -146,51 +162,9 @@ dnf5 install --allowerasing -y \
     wine-alsa \
     wine-pulseaudio \
     winetricks
-dnf5 remove -y \
-    gnome-boxes \
-    gnome-connections \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-common \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-text-editor \
-    gnome-tour \
-    malcontent-control \
-    showtime
 dnf5 autoremove -y
 dnf5 swap -y mesa-va-drivers mesa-va-drivers-freeworld
-dnf5 install -y nano
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
-bash -c "cat > /etc/dnf/libdnf5-plugins/actions.d/snapper.actions" <<'EOF'
-# Get snapshot description
-pre_transaction::::/usr/bin/sh -c echo\ "tmp.cmd=$(ps\ -o\ command\ --no-headers\ -p\ '${pid}')"
-
-# Creates pre snapshot before the transaction and stores the snapshot number in the "tmp.snapper_pre_number"  variable.
-pre_transaction::::/usr/bin/sh -c echo\ "tmp.snapper_pre_number=$(snapper\ create\ -t\ pre\ -c\ number\ -p\ -d\ '${tmp.cmd}')"
-
-# If the variable "tmp.snapper_pre_number" exists, it creates post snapshot after the transaction and removes the variable "tmp.snapper_pre_number".
-post_transaction::::/usr/bin/sh -c [\ -n\ "${tmp.snapper_pre_number}"\ ]\ &&\ snapper\ create\ -t\ post\ --pre-number\ "${tmp.snapper_pre_number}"\ -c\ number\ -d\ "${tmp.cmd}"\ ;\ echo\ tmp.snapper_pre_number\ ;\ echo\ tmp.cmd
-EOF
-snapper -c root create-config /
-restorecon -RFv /.snapshots
-snapper -c root set-config ALLOW_USERS=$USER SYNC_ACL=yes
-echo 'PRUNENAMES = ".snapshots"' | sudo tee -a /etc/updatedb.conf
-sed -i.bkp \
-  -e '/^#GRUB_BTRFS_SNAPSHOT_KERNEL_PARAMETERS=/a \
-GRUB_BTRFS_SNAPSHOT_KERNEL_PARAMETERS="rd.live.overlay.overlayfs=1"' \
-  -e '/^#GRUB_BTRFS_GRUB_DIRNAME=/a \
-GRUB_BTRFS_GRUB_DIRNAME="/boot/grub2"' \
-  -e '/^#GRUB_BTRFS_MKCONFIG=/a \
-GRUB_BTRFS_MKCONFIG=/usr/bin/grub2-mkconfig' \
-  -e '/^#GRUB_BTRFS_SCRIPT_CHECK=/a \
-GRUB_BTRFS_SCRIPT_CHECK=grub2-script-check' \
-  config
-make install
-systemctl enable grub-btrfsd.service
-systemctl enable snapper-timeline.timer
-systemctl enable snapper-cleanup.timer
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f -v
 fastfetch

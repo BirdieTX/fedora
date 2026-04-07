@@ -1,3 +1,5 @@
+#!/bin/bash
+
 flatpak install flathub -y com.adamcake.Bolt
 flatpak install flathub -y com.belmoussaoui.Decoder
 flatpak install flathub -y com.belmoussaoui.Obfuscate
@@ -20,6 +22,7 @@ flatpak install flathub -y io.github.pol_rivero.github-desktop-plus
 flatpak install flathub -y io.github.realmazharhussain.GdmSettings
 flatpak install flathub -y io.gitlab.adhami3310.Converter
 flatpak install flathub -y io.missioncenter.MissionCenter
+flatpak install flathub -y io.github.wartybix.Constrict
 flatpak install flathub -y md.obsidian.Obsidian
 flatpak install flathub -y me.proton.Mail
 flatpak install flathub -y me.proton.Pass

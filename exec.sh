@@ -16,10 +16,6 @@ USER_HOME=$(eval printf ~$SUDO_USER)
 
 cp -r etc /
 cp -r usr /
-rm /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:phracek:PyCharm.repo
-rm /etc/yum.repos.d/google-chrome.repo
-rm /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
-rm /etc/yum.repos.d/rpmfusion-nonfree-steam.repo
 plymouth-set-default-theme -R fedora-mac-style
 sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
@@ -28,20 +24,6 @@ sudo -u "$SUDO_USER" cp -r .local "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .scripts "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 
-dnf5 remove -y \
-    gnome-boxes \
-    gnome-connections \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-common \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-text-editor \
-    gnome-tour \
-    malcontent-control \
-    nano-default-editor \
-    showtime
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf5 copr enable -y sneexy/zen-browser
 dnf5 config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -59,6 +41,7 @@ dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
     audacity-freeworld \
+    baobab \
     bat \
     bibata-cursor-theme \
     bottles \
@@ -70,6 +53,7 @@ dnf5 install --allowerasing -y \
     cmatrix \
     code \
     cosmic-session \
+    decibels \
     d-spy \
     dconf-editor \
     default-fonts \
@@ -77,23 +61,31 @@ dnf5 install --allowerasing -y \
     eza \
     fastfetch \
     ffmpeg \
+    firefox \
     fish \
+    flatpak \
     flatseal \
     freedoom \
     freedoom2 \
     gamescope \
     ghostty \
     gimp \
+    gnome-characters \
     gnome-chess \
+    gnome-disk-utility \
     gnome-firmware \
+    gnome-font-viewer \
     gnome-mahjongg \
     gnome-mines \
     gnome-nibbles \
+    gnome-shell \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
+    gnome-software \
     gnome-sudoku \
     gnome-tweaks \
+    gnome-weather \
     google-android-emoji-fonts \
     google-arimo-fonts \
     google-droid-fonts-all \
@@ -130,17 +122,23 @@ dnf5 install --allowerasing -y \
     libdnf5-plugin-actions \
     libheif-freeworld \
     libreoffice-base \
+    libreoffice-calc \
     libreoffice-draw \
+    libreoffice-impress \
     libreoffice-math \
+    libreoffice-writer \
     libxcrypt-compat \
+    loupe \
     lutris \
     material-icons-fonts \
     mc \
+    mediawriter \
     memtest86+ \
     mesa-vulkan-drivers.x86_64 \
     mission-center \
     mozilla-openh264 \
     nano \
+    nautilus \
     nautilus-gsconnect \
     nerd-fonts \
     obs-studio \
@@ -150,9 +148,11 @@ dnf5 install --allowerasing -y \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
+    plymouth-plugin-two-step \
     polari \
     proton-vpn-gnome-desktop \
     protontricks \
+    ptyxis \
     qbittorrent \
     qt5ct \
     qt6ct \
@@ -168,6 +168,7 @@ dnf5 install --allowerasing -y \
     setroubleshoot \
     steam \
     snapper \
+    snapshot \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
@@ -185,9 +186,12 @@ dnf5 install --allowerasing -y \
     yazi \
     zed \
     zen-browser
+dnf5 remove -y \
+    doxbox-staging \
+    gnome-tour \
+    malcontent-control \
+    nano-default-editor
 dnf5 autoremove -y
-dnf5 swap fedora-release-identity-workstation fedora-release-identity-basic
-dnf5 swap fedora-release-workstation fedora-release
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f -v

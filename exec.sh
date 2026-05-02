@@ -16,7 +16,6 @@ USER_HOME=$(eval printf ~$SUDO_USER)
 
 cp -r etc /
 cp -r usr /
-plymouth-set-default-theme -R fedora-mac-style
 sudo -u "$SUDO_USER" cp -r .bashrc.d "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .hidden "$USER_HOME"
@@ -194,5 +193,6 @@ dnf5 remove -y \
 dnf5 autoremove -y
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service
+plymouth-set-default-theme -R fedora-mac-style
 dracut --regenerate-all -f -v
 fastfetch

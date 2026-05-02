@@ -82,12 +82,6 @@
       "type": "swap",
       "key": "󰓡 Swap Space         ",
     },
-    {
-      "type": "command",
-      "key": " Disk Space         ",
-      "text": "$HOME/.scripts/diskspace.sh",
-      "format": "{result}",
-    },
     "break",
     "colors",
   ],

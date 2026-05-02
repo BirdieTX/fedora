@@ -1,5 +1,14 @@
 #!/bin/bash
 
+set -e
+
+if [ "$EUID" -ne 0 ]; then
+    printf $RED"Please run as root using sudo!"$END
+    exit 1
+fi
+
+USER_HOME=$(eval printf ~$SUDO_USER)
+
 bash -c "cat > /etc/dnf/libdnf5-plugins/actions.d/snapper.actions" <<'EOF'
 # Get snapshot description
 pre_transaction::::/usr/bin/sh -c echo\ "tmp.cmd=$(ps\ -o\ command\ --no-headers\ -p\ '${pid}')"
@@ -13,8 +22,8 @@ EOF
 snapper -c root create-config /
 restorecon -RFv /.snapshots
 snapper -c root set-config ALLOW_USERS=$USER SYNC_ACL=yes
-echo 'PRUNENAMES = ".snapshots"' | sudo tee -a /etc/updatedb.conf
-sed -i.bkp \
+sudo -u "$SUDO_USER" echo 'PRUNENAMES = ".snapshots"' | sudo tee -a /etc/updatedb.conf
+sudo -u "$SUDO_USER" sed -i.bkp \
   -e '/^#GRUB_BTRFS_SNAPSHOT_KERNEL_PARAMETERS=/a \
 GRUB_BTRFS_SNAPSHOT_KERNEL_PARAMETERS="rd.live.overlay.overlayfs=1"' \
   -e '/^#GRUB_BTRFS_GRUB_DIRNAME=/a \
@@ -25,6 +34,6 @@ GRUB_BTRFS_MKCONFIG=/usr/bin/grub2-mkconfig' \
 GRUB_BTRFS_SCRIPT_CHECK=grub2-script-check' \
   config
 make install
-systemctl enable grub-btrfsd.service
-systemctl enable snapper-timeline.timer
-systemctl enable snapper-cleanup.timer
+systemctl enable --now grub-btrfsd.service
+systemctl enable --now snapper-timeline.timer
+systemctl enable --now snapper-cleanup.timer

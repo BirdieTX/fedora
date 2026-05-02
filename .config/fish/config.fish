@@ -10,7 +10,6 @@ if status is-interactive
 		alias fft='fastfetch -c $HOME/.config/fastfetch/term.jsonc'
 		alias neofetch='fastfetch -c neofetch'
 		alias nf='fastfetch -c neofetch'
-		alias patch='$HOME/.scripts/patch.sh'
 
 	# Run fastfetch configuration on shell startup (expect tty)
 	fastfetch -c ~/.config/fastfetch/term.jsonc

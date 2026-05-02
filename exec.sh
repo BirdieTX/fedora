@@ -42,7 +42,16 @@ dnf5 remove -y \
     nano-default-editor \
     showtime
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
+dnf5 copr enable -y sneexy/zen-browser
+dnf5 config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+rpm --import https://packages.microsoft.com/keys/microsoft.asc &&
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | tee /etc/yum.repos.d/vscode.repo > /dev/null
+wget "https://repo.protonvpn.com/fedora-$(cat /etc/fedora-release | cut -d' ' -f 3)-stable/protonvpn-stable-release/protonvpn-stable-release-1.0.3-1.noarch.rpm"
 dnf5 install -y \
+    terra-release-extras \
+    terra-release-mesa \
+    ./protonvpn-stable-release-1.0.3-1.noarch.rpm \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf5 install --allowerasing -y \
@@ -50,16 +59,21 @@ dnf5 install --allowerasing -y \
     antimicrox \
     audacity-freeworld \
     bat \
+    bibata-cursor-theme \
     bottles \
+    brave-browser \
     btop \
     btrfs-assistant \
     bustle \
     cargo \
     cmatrix \
+    code \
+    cosmic-session \
     d-spy \
     dconf-editor \
     default-fonts \
     elisa-player \
+    eza \
     fastfetch \
     ffmpeg \
     fish \
@@ -67,15 +81,14 @@ dnf5 install --allowerasing -y \
     freedoom \
     freedoom2 \
     gamescope \
+    ghostty \
     gimp \
     gnome-chess \
-    gnome-extensions-app \
     gnome-firmware \
     gnome-mahjongg \
     gnome-mines \
     gnome-nibbles \
     gnome-shell-extension-appindicator \
-    gnome-shell-extension-blur-my-shell \
     gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
     gnome-sudoku \
@@ -96,18 +109,20 @@ dnf5 install --allowerasing -y \
     gstreamer-plugins-espeak \
     gstreamer1-plugins-bad-freeworld \
     gstreamer1-plugins-ugly \
+    HandBrake \
+    HandBrake-gui \
     hardinfo2 \
     htop \
     inotify-tools \
     jetbrains-mono-fonts-all \
-    kate \
+    jetbrainsmono-nerd-fonts \
     kdenlive \
     kid3 \
     kolourpaint \
     kmousetool \
     kpat \
-    krename \
     krita \
+    kstars \
     kvantum \
     libavcodec-freeworld \
     libcurl-devel \
@@ -119,21 +134,23 @@ dnf5 install --allowerasing -y \
     libxcrypt-compat \
     lutris \
     material-icons-fonts \
+    mc \
     memtest86+ \
-    mesa-va-drivers-freeworld \
-    mesa-vulkan-drivers-freeworld.x86_64 \
-    mesa-vulkan-drivers-freeworld.i686 \
+    mesa-vulkan-drivers.x86_64 \
+    mission-center \
     mozilla-openh264 \
     nano \
     nautilus-gsconnect \
+    nerd-fonts \
     obs-studio \
+    okteta \
     openrgb \
     openttd \
-    openvpn \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
     polari \
+    proton-vpn-gnome-desktop \
     protontricks \
     qbittorrent \
     qt5ct \
@@ -146,12 +163,14 @@ dnf5 install --allowerasing -y \
     rpmfusion-nonfree-obsolete-packages \
     rsms-inter-fonts \
     rsms-inter-vf-fonts \
+    rust \
     setroubleshoot \
     steam \
     snapper \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
+    vesktop \
     vim-default-editor \
     virt-manager \
     vlc \
@@ -161,9 +180,13 @@ dnf5 install --allowerasing -y \
     wine \
     wine-alsa \
     wine-pulseaudio \
-    winetricks
+    winetricks \
+    yazi \
+    zed \
+    zen-browser
 dnf5 autoremove -y
-dnf5 swap -y mesa-va-drivers mesa-va-drivers-freeworld
+dnf5 swap fedora-release-identity-workstation fedora-release-identity-basic
+dnf5 swap fedora-release-workstation fedora-release
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service
 dracut --regenerate-all -f -v

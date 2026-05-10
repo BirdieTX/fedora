@@ -8,6 +8,7 @@ if status is-interactive
 		alias fedora='$HOME/.scripts/upgrade.sh'
 		alias ff='fastfetch'
 		alias fft='fastfetch -c $HOME/.config/fastfetch/term.jsonc'
+		alias fwsync='$HOME/.scripts/fwsync.sh'
 		alias neofetch='fastfetch -c neofetch'
 		alias nf='fastfetch -c neofetch'
 

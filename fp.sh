@@ -4,7 +4,6 @@ flatpak install flathub -y com.adamcake.Bolt
 flatpak install flathub -y com.belmoussaoui.Decoder
 flatpak install flathub -y com.belmoussaoui.Obfuscate
 flatpak install flathub -y com.discordapp.Discord
-flatpak install flathub -y com.github.qarmin.szyszka
 flatpak install flathub -y com.markopejic.downloader
 flatpak install flathub -y com.mattjakeman.ExtensionManager
 flatpak install flathub -y com.pokemmo.PokeMMO

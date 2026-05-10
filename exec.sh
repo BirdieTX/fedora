@@ -36,11 +36,25 @@ dnf5 install -y \
     ./protonvpn-stable-release-1.0.3-1.noarch.rpm \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+dnf5 remove -y \
+    gnome-boxes \
+    gnome-connections \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-common \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
+    gnome-text-editor \
+    gnome-tour \
+    malcontent-control \
+    nano-default-editor \
+    showtime
+dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
     audacity-freeworld \
-    baobab \
     bat \
     bibata-cursor-theme \
     bottles \
@@ -51,7 +65,6 @@ dnf5 install --allowerasing -y \
     cargo \
     cmatrix \
     code \
-    cosmic-session \
     decibels \
     d-spy \
     dconf-editor \
@@ -83,31 +96,21 @@ dnf5 install --allowerasing -y \
     f43-backgrounds-gnome \
     fastfetch \
     ffmpeg \
-    firefox \
     fish \
-    flatpak \
     flatseal \
     freedoom \
     freedoom2 \
     gamescope \
-    ghostty \
     gimp \
-    gnome-characters \
     gnome-chess \
-    gnome-disk-utility \
     gnome-firmware \
-    gnome-font-viewer \
     gnome-mahjongg \
     gnome-mines \
     gnome-nibbles \
-    gnome-shell \
     gnome-shell-extension-appindicator \
-    gnome-shell-extension-gsconnect \
     gnome-shell-extension-just-perfection \
-    gnome-software \
     gnome-sudoku \
     gnome-tweaks \
-    gnome-weather \
     google-android-emoji-fonts \
     google-arimo-fonts \
     google-droid-fonts-all \
@@ -137,6 +140,7 @@ dnf5 install --allowerasing -y \
     kolourpaint \
     kmousetool \
     kpat \
+    krename \
     krita \
     kstars \
     kvantum \
@@ -145,24 +149,17 @@ dnf5 install --allowerasing -y \
     libdnf5-plugin-actions \
     libheif-freeworld \
     libreoffice-base \
-    libreoffice-calc \
     libreoffice-draw \
-    libreoffice-impress \
     libreoffice-math \
-    libreoffice-writer \
     libxcrypt-compat \
-    loupe \
     lutris \
     material-icons-fonts \
     mc \
-    mediawriter \
     memtest86+ \
     mesa-vulkan-drivers.x86_64 \
     mission-center \
     mozilla-openh264 \
     nano \
-    nautilus \
-    nautilus-gsconnect \
     nerd-fonts \
     obs-studio \
     okteta \
@@ -171,11 +168,9 @@ dnf5 install --allowerasing -y \
     papirus-icon-theme \
     pavucontrol \
     pipewire-codec-aptx \
-    plymouth-plugin-two-step \
     polari \
     proton-vpn-gnome-desktop \
     protontricks \
-    ptyxis \
     qbittorrent \
     qt5ct \
     qt6ct \
@@ -191,11 +186,9 @@ dnf5 install --allowerasing -y \
     setroubleshoot \
     steam \
     snapper \
-    snapshot \
     sysprof \
     terminus-fonts \
     terminus-fonts-console \
-    vesktop \
     vim-default-editor \
     virt-manager \
     vlc \
@@ -210,10 +203,7 @@ dnf5 install --allowerasing -y \
     zed \
     zen-browser
 dnf5 remove -y \
-    doxbox-staging \
-    gnome-tour \
-    malcontent-control \
-    nano-default-editor
+    doxbox-staging
 dnf5 autoremove -y
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 systemctl disable NetworkManager-wait-online.service

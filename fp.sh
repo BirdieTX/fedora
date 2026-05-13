@@ -25,6 +25,7 @@ flatpak install flathub -y me.proton.Mail
 flatpak install flathub -y me.proton.Pass
 flatpak install flathub -y net.runelite.RuneLite
 flatpak install flathub -y org.gnome.gitlab.YaLTeR.VideoTrimmer
+flatpak install flathub -y org.localsend.localsend_app
 flatpak install flathub -y org.signal.Signal
 flatpak install flathub -y ro.go.hmlendea.DL-Desktop
 flatpak install flathub -y sh.ppy.osu

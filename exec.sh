@@ -36,21 +36,6 @@ dnf5 install -y \
     ./protonvpn-stable-release-1.0.3-1.noarch.rpm \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-dnf5 remove -y \
-    gnome-boxes \
-    gnome-connections \
-    gnome-shell-extension-apps-menu \
-    gnome-shell-extension-background-logo \
-    gnome-shell-extension-common \
-    gnome-shell-extension-launch-new-instance \
-    gnome-shell-extension-places-menu \
-    gnome-shell-extension-window-list \
-    gnome-text-editor \
-    gnome-tour \
-    malcontent-control \
-    nano-default-editor \
-    showtime
-dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
@@ -203,9 +188,24 @@ dnf5 install --allowerasing -y \
     zed \
     zen-browser
 dnf5 remove -y \
-    doxbox-staging
+    gnome-boxes \
+    gnome-connections \
+    gnome-shell-extension-apps-menu \
+    gnome-shell-extension-background-logo \
+    gnome-shell-extension-common \
+    gnome-shell-extension-launch-new-instance \
+    gnome-shell-extension-places-menu \
+    gnome-shell-extension-window-list \
+    gnome-text-editor \
+    gnome-tour \
+    malcontent-control \
+    showtime
 dnf5 autoremove -y
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
+dnf5 autoremove -y
+dnf5 install -y \
+    nano
+dnf5 remove -y dosbox-staging
 systemctl disable NetworkManager-wait-online.service
 plymouth-set-default-theme -R fedora-mac-style
 dracut --regenerate-all -f -v

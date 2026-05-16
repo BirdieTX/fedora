@@ -36,6 +36,7 @@ dnf5 install -y \
     ./protonvpn-stable-release-1.0.3-1.noarch.rpm \
     "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
     "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+cp -r yum.repos.d /etc
 dnf5 install --allowerasing -y \
     alacritty \
     antimicrox \
@@ -206,6 +207,7 @@ dnf5 autoremove -y
 dnf5 install -y \
     nano
 dnf5 remove -y dosbox-staging
+dnf5 autoremove -y
 systemctl disable NetworkManager-wait-online.service
 plymouth-set-default-theme -R fedora-mac-style
 dracut --regenerate-all -f -v

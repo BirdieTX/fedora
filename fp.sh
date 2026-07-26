@@ -2,7 +2,7 @@
 
 flatpak install flathub -y \
 com.adamcake.Bolt \
-com.belmoussaoui.Decoder\
+com.belmoussaoui.Decoder \
 com.belmoussaoui.Obfuscate \
 com.brave.Browser \
 com.discordapp.Discord \

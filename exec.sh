@@ -60,7 +60,6 @@ dnf5 install --allowerasing -y \
     codium \
     d-spy \
     dconf-editor \
-    decibels \
     default-fonts \
     elisa-player \
     eza \
@@ -199,6 +198,7 @@ dnf5 install --allowerasing -y \
     rsms-inter-vf-fonts \
     rust \
     setroubleshoot \
+    starship \
     steam \
     snapper \
     terminus-fonts \

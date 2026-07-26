@@ -4,14 +4,8 @@ if status is-interactive
 	# Remove fish greeting
 	set -U fish_greeting
 
-		# User defined functions
-		alias fedora='$HOME/.scripts/upgrade.sh'
-		alias ff='fastfetch'
-		alias fft='fastfetch -c $HOME/.config/fastfetch/term.jsonc'
-		alias fwsync='$HOME/.scripts/fwsync.sh'
-		alias neofetch='fastfetch -c neofetch'
-		alias nf='fastfetch -c neofetch'
-
-	# Run fastfetch configuration on shell startup (expect tty)
+	# Run fastfetch configuration on shell startup
 	fastfetch -c ~/.config/fastfetch/term.jsonc
 end
+
+starship init fish | source

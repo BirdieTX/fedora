@@ -25,6 +25,8 @@ plymouth-set-default-theme -R fedora-mac-style
 rm /etc/dnf/protected.d/grub*
 rm /etc/dnf/protected.d/shim*
 
+dnf5 swap -y fedora-release-identity-workstation fedora-release-identity-basic
+dnf5 swap -y fedora-release-workstation fedora-release
 dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 dnf5 install -y \
     terra-release-extras \
@@ -250,4 +252,6 @@ echo 'PRUNENAMES = ".snapshots"' | sudo tee -a /etc/updatedb.conf
 systemctl enable --now snapper-timeline.timer
 systemctl enable --now snapper-cleanup.timer
 dracut --regenerate-all -f -v
+cp -r boot /
+bootctl update
 fastfetch

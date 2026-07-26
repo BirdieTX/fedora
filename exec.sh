@@ -82,51 +82,28 @@ dnf5 install --allowerasing -y \
     elisa-player \
     eza \
     f21-backgrounds-gnome \
-    f21-backgrounds-kde \
     f22-backgrounds-gnome \
-    f22-backgrounds-kde \
     f23-backgrounds-gnome \
-    f23-backgrounds-kde \
     f24-backgrounds-gnome \
-    f24-backgrounds-kde \
     f25-backgrounds-gnome \
-    f25-backgrounds-kde \
     f26-backgrounds-gnome \
-    f26-backgrounds-kde \
     f27-backgrounds-gnome \
-    f27-backgrounds-kde \
     f28-backgrounds-gnome \
-    f28-backgrounds-kde \
     f29-backgrounds-gnome \
-    f29-backgrounds-kde \
     f30-backgrounds-gnome \
-    f30-backgrounds-kde \
     f31-backgrounds-gnome \
-    f31-backgrounds-kde \
     f32-backgrounds-gnome \
-    f32-backgrounds-kde \
     f33-backgrounds-gnome \
-    f33-backgrounds-kde \
     f34-backgrounds-gnome \
-    f34-backgrounds-kde \
     f35-backgrounds-gnome \
-    f35-backgrounds-kde \
     f36-backgrounds-gnome \
-    f36-backgrounds-kde \
     f37-backgrounds-gnome \
-    f37-backgrounds-kde \
     f38-backgrounds-gnome \
-    f38-backgrounds-kde \
     f39-backgrounds-gnome \
-    f39-backgrounds-kde \
     f40-backgrounds-gnome \
-    f40-backgrounds-kde \
     f41-backgrounds-gnome \
-    f41-backgrounds-kde \
     f42-backgrounds-gnome \
-    f42-backgrounds-kde \
     f43-backgrounds-gnome \
-    f43-backgrounds-kde \
     fastfetch \
     ffmpeg \
     fish \

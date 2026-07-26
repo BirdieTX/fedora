@@ -22,6 +22,8 @@ sudo -u "$SUDO_USER" cp -r .local "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .zshrc "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
 plymouth-set-default-theme -R fedora-mac-style
+rm /etc/dnf/protected.d/grub*
+rm /etc/dnf/protected.d/shim*
 
 dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 dnf5 install -y \
@@ -40,9 +42,22 @@ dnf5 remove -y \
     gnome-shell-extension-window-list \
     gnome-text-editor \
     gnome-tour \
+    grub2\* \
+    grubby \
     malcontent-control \
     nano-default-editor \
+    shim\* \
     showtime
+rm -rf /boot/grub2
+rm -rf /boot/loader
+dnf5 install -y \
+    sbctl \
+    sdubby \
+    systemd-boot-unsigned
+sudo -u "$SUDO_USER" cat /proc/cmdline | cut -d ' ' -f 2- | sudo tee /etc/kernel/cmdline
+bootctl install
+kernel-install add $(uname -r) /lib/modules/$(uname -r)/vmlinuz
+dnf5 reinstall -y kernel-core
 dnf5 upgrade --allowerasing --allow-downgrade --skip-unavailable --refresh -y
 dnf5 install --allowerasing -y \
     alacritty \
@@ -218,5 +233,21 @@ dnf5 install --allowerasing -y \
 dnf5 autoremove -y
 dnf5 install -y nano
 systemctl disable NetworkManager-wait-online.service
+bash -c "cat > /etc/dnf/libdnf5-plugins/actions.d/snapper.actions" <<'EOF'
+# Get snapshot description
+pre_transaction::::/usr/bin/sh -c echo\ "tmp.cmd=$(ps\ -o\ command\ --no-headers\ -p\ '${pid}')"
+
+# Creates pre snapshot before the transaction and stores the snapshot number in the "tmp.snapper_pre_number"  variable.
+pre_transaction::::/usr/bin/sh -c echo\ "tmp.snapper_pre_number=$(snapper\ create\ -t\ pre\ -c\ number\ -p\ -d\ '${tmp.cmd}')"
+
+# If the variable "tmp.snapper_pre_number" exists, it creates post snapshot after the transaction and removes the variable "tmp.snapper_pre_number".
+post_transaction::::/usr/bin/sh -c [\ -n\ "${tmp.snapper_pre_number}"\ ]\ &&\ snapper\ create\ -t\ post\ --pre-number\ "${tmp.snapper_pre_number}"\ -c\ number\ -d\ "${tmp.cmd}"\ ;\ echo\ tmp.snapper_pre_number\ ;\ echo\ tmp.cmd
+EOF
+snapper -c root create-config /
+restorecon -RFv /.snapshots
+snapper -c root set-config ALLOW_USERS=$REAL_USER SYNC_ACL=yes
+echo 'PRUNENAMES = ".snapshots"' | sudo tee -a /etc/updatedb.conf
+systemctl enable --now snapper-timeline.timer
+systemctl enable --now snapper-cleanup.timer
 dracut --regenerate-all -f -v
 fastfetch

@@ -18,6 +18,7 @@ cp -r etc /
 cp -r usr /
 sudo -u "$SUDO_USER" cp -r .bashrc "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .config "$USER_HOME"
+sudo -u "$SUDO_USER" cp -r .hidden "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .local "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r .zshrc "$USER_HOME"
 sudo -u "$SUDO_USER" cp -r Pictures "$USER_HOME"
@@ -199,6 +200,7 @@ dnf5 install --allowerasing -y \
     okteta \
     openrgb \
     openttd \
+    papirus-icon-theme \
     pipewire-codec-aptx \
     protontricks \
     qbittorrent \
@@ -254,4 +256,5 @@ systemctl enable --now snapper-cleanup.timer
 dracut --regenerate-all -f -v
 cp -r boot /
 bootctl update
+sudo -u "$SUDO_USER" curl https://raw.githubusercontent.com/aunetx/blur-my-shell/refs/heads/master/scripts/rounded_blur_build.sh | bash -s -- -i
 fastfetch

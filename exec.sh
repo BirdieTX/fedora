@@ -76,6 +76,7 @@ dnf5 install --allowerasing -y \
     cargo \
     cmatrix \
     codium \
+    cosmic-session \
     d-spy \
     dconf-editor \
     default-fonts \

@@ -167,7 +167,6 @@ dnf5 install --allowerasing -y \
     lutris \
     material-icons-fonts \
     mc \
-    memtest86+ \
     mesa-vulkan-drivers.x86_64 \
     mission-center \
     mozilla-openh264 \
@@ -214,16 +213,6 @@ dnf5 install --allowerasing -y \
 dnf5 autoremove -y
 dnf5 install -y nano
 systemctl disable NetworkManager-wait-online.service
-bash -c "cat > /etc/dnf/libdnf5-plugins/actions.d/snapper.actions" <<'EOF'
-# Get snapshot description
-pre_transaction::::/usr/bin/sh -c echo\ "tmp.cmd=$(ps\ -o\ command\ --no-headers\ -p\ '${pid}')"
-
-# Creates pre snapshot before the transaction and stores the snapshot number in the "tmp.snapper_pre_number"  variable.
-pre_transaction::::/usr/bin/sh -c echo\ "tmp.snapper_pre_number=$(snapper\ create\ -t\ pre\ -c\ number\ -p\ -d\ '${tmp.cmd}')"
-
-# If the variable "tmp.snapper_pre_number" exists, it creates post snapshot after the transaction and removes the variable "tmp.snapper_pre_number".
-post_transaction::::/usr/bin/sh -c [\ -n\ "${tmp.snapper_pre_number}"\ ]\ &&\ snapper\ create\ -t\ post\ --pre-number\ "${tmp.snapper_pre_number}"\ -c\ number\ -d\ "${tmp.cmd}"\ ;\ echo\ tmp.snapper_pre_number\ ;\ echo\ tmp.cmd
-EOF
 snapper -c root create-config /
 restorecon -RFv /.snapshots
 snapper -c root set-config ALLOW_USERS=$REAL_USER SYNC_ACL=yes
@@ -233,5 +222,4 @@ systemctl enable --now snapper-cleanup.timer
 dracut --regenerate-all -f -v
 cp -r boot /
 bootctl update
-sudo -u "$SUDO_USER" curl https://raw.githubusercontent.com/aunetx/blur-my-shell/refs/heads/master/scripts/rounded_blur_build.sh | bash -s -- -i
 fastfetch
